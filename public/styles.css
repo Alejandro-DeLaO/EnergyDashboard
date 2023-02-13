@@ -1,0 +1,51 @@
+:root {
+    --primary-color: rgb(51, 147, 199);
+    --secondary-color: rgb(176, 186, 196);
+    --energy-yellow: rgb(250, 182, 39);
+    --energy-red: rgb(218, 78, 57);
+    --energy-green: rgb(51, 198, 135);
+    --energy-blue: rgb(57, 73, 198);
+    --energy-orange: rgb(255, 146, 65);
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+.error-message{
+    color: red;
+    padding-top: 10px;
+}
+
+.primary-color {
+    color: var(--primary-color);
+}
+
+.secondary-color {
+    color: var(--secondary-color);
+}
+
+.tertiary-color {
+    color: var(--tertiary-color);
+}
+
+.primary-background {
+    background-color: var(--primary-color) !important;
+}
+
+.secondary-background {
+    background-color: var(--secondary-color) !important;
+}
+
+.tertiary-background {
+    background-color: var(--tertiary-color) !important;
+}
+
+.icon {
+    font-size: 1.5rem;
+}

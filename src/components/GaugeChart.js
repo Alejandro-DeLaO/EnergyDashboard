@@ -18,10 +18,11 @@ const defaultData = {
   ],
 };
 
-setInterval(() => {
-  const chart = this.chartReference.current.chartInstance;
-  chart.update();
-}, 2000);
+//Da error, checar
+//setInterval(() => {
+//  const chart = this.chartReference.current.chartInstance;
+//  chart.update();
+//}, 2000);
 
 // gaugeNeedle block
 const gaugeNeedle = {
