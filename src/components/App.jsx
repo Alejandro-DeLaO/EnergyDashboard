@@ -7,6 +7,7 @@ import LoginPage from "../pages/LoginPage/LoginPage";
 import SignUpPage from "../pages/SignUpPage/SignUpPage";
 import DashboardPage from "../pages/DashboardPage";
 import FooterComponent from "./FooterComponent";
+import EnergyIndicatorV2 from "../pages/EnergyIndicator/EnergyIndicatorV2";
 
 export default function App() {
     return (
@@ -20,7 +21,7 @@ export default function App() {
                 <Route path="/dashboard" element={<DashboardPage />}/>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignUpPage />}/>
-
+                <Route path="/test" element={<EnergyIndicatorV2 />}/>
             </Routes>
 
             <FooterComponent/>

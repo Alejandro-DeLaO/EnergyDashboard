@@ -7,7 +7,7 @@ const defaultData = {
     {
       data: [20, 20, 20, 20, 20],
       backgroundColor: ["#009a60", "#92b73a", "#edbd02", "#fc6114", "#ed0022"],
-      needleValue: 16.5,
+      needleValue: 50,
       borderColor: ["white"],
       borderWidth: 2,
       cutout: "65%",
@@ -18,11 +18,6 @@ const defaultData = {
   ],
 };
 
-//Da error, checar
-//setInterval(() => {
-//  const chart = this.chartReference.current.chartInstance;
-//  chart.update();
-//}, 2000);
 
 // gaugeNeedle block
 const gaugeNeedle = {
@@ -76,14 +71,6 @@ const gaugeNeedle = {
   },
 };
 
-/* config
-const config = {
-  type: "doughnut",
-  defaultData,
-  options: {},
-  plugins: [gaugeNeedle],
-};*/
-
 // return block
 function DoughnutChart({ chartData = defaultData }) {
   return (
@@ -91,7 +78,9 @@ function DoughnutChart({ chartData = defaultData }) {
       <Doughnut
         data={chartData}
         plugins={[gaugeNeedle]}
-        updateMode={"resize"}
+        options={{
+          maintainAspectRatio: false
+        }}
       />
     </div>
   );

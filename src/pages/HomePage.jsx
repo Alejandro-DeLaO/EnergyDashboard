@@ -22,6 +22,7 @@ export default function HomePage() {
                 <SectionComponent to='/indicador/biblioteca' icon='fa-solid fa-book' text='Biblioteca universitaria' />
                 <SectionComponent to='/indicador/ciencias-salud' icon='fa-solid fa-notes-medical' text='Ciencias de la salud' />
                 <SectionComponent to='/dashboard' icon='fa-solid fa-chart-line' text='Monitores' />
+                <SectionComponent to='/test' icon='fa-solid fa-hammer' text='test' />
             </div>
         </section>
     );

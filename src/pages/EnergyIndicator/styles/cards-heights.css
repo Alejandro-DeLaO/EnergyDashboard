@@ -1,0 +1,26 @@
+#top-left-card{
+    height: auto;
+}
+#bottom-left-card{
+    height: auto;
+}
+#top-right-card{
+    height: auto;
+}
+#bottom-right-card{
+    height: auto;
+}
+@media (min-width: 1200px) {
+    #top-left-card{
+        height: 35%;
+    }
+    #bottom-left-card{
+        height: 60%;
+    }
+    #top-right-card{
+        height: auto;
+    }
+    #bottom-right-card{
+        height: 30%;
+    }
+ }
