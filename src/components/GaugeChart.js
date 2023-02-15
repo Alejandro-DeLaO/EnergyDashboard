@@ -85,7 +85,7 @@ const config = {
 };*/
 
 // return block
-function DoughnutChart({ chartData = defaultData }) {
+function DoughnutChart({ chartData = defaultData }, props) {
   return (
     <div className="chart-container">
       <Doughnut

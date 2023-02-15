@@ -84,7 +84,7 @@ export default function EnergyIndicator() {
                                         margin: "auto",
                                     }}
                                 >
-                                    <DoughnutChart></DoughnutChart>
+                                    <DoughnutChart />
                                 </div>
                             </Card.Body>
                             <Card.Footer>
