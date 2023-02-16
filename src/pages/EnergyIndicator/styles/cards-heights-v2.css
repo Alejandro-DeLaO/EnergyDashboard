@@ -1,0 +1,19 @@
+#gauge-card-body{
+    height: 150px;
+}
+
+@media (min-width: 768px) {
+    #gauge-card-body{
+        height: 200px;
+    }
+ }
+ @media (min-width: 992px) {
+    #gauge-card-body{
+        height: 300px;
+    }
+ }
+ @media (min-width: 1200px) {
+    #gauge-card-body{
+        height: 330px;
+    }
+ }

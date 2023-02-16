@@ -5,9 +5,10 @@ import { EvenMoreData } from "../../utils/EvenMoreData";
 import GaugeChart from "../../components/GaugeChart";
 import LineChart from "../../components/LineChart";
 import BarChart from "../../components/BarChart";
-import "./styles/cards-heights-v2.css"
+import CutSvg from "./components/CutSvg";
+import "./styles/cards-heights-v3.css"
 
-export default function EnergyIndicatorV2(){
+export default function EnergyIndicatorV3(){
     const [Data1] = useState({
         labels: Data.map((data) => data.year),
         datasets: [
@@ -49,11 +50,10 @@ export default function EnergyIndicatorV2(){
     });
     return (
         <section>
-            <div className="container-fluid col-12">
-                <div className="row d-flex justify-content-center m-5 mb-0">
-                    <div className="col-12">
-                        <div className="card shadow text-center">
-                            <div class="card-header ">
+                <div className="row d-flex justify-content-center m-5 mt-0 mb-0">
+                    <div className="col-12 mt-5 col-lg-3">
+                        <div className="card shadow text-center h-100">
+                        <div class="card-header ">
                                 <h5>Energia consumida en edificio 1</h5>
                             </div>
                             <div className="card-body" id="gauge-card-body">
@@ -64,19 +64,7 @@ export default function EnergyIndicatorV2(){
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="row d-flex justify-content-center m-5 mt-0">
-                    <div className="col-12 mt-5 col-lg-4">
-                        <div className="card shadow text-center h-100">
-                            <div className="card-body ">
-                                <LineChart chartData={Data2}></LineChart>
-                            </div>
-                            <div className="card-footer">
-                                    <p style={{fontSize: "1.3rem" }}>Ultima semana</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-12 mt-5 col-lg-4">
+                    <div className="col-12 mt-5 col-lg-3">
                         <div className="card shadow text-center h-100">
                             <div className="card-body ">
                                 <BarChart chartData={Data1}></BarChart>
@@ -86,7 +74,17 @@ export default function EnergyIndicatorV2(){
                             </div>
                         </div>
                     </div>
-                    <div className="col-12 mt-5 col-lg-4">
+                    <div className="col-12 mt-5 col-lg-3">
+                        <div className="card shadow text-center h-100">
+                            <div className="card-body ">
+                                <LineChart chartData={Data3}></LineChart>
+                            </div>
+                            <div className="card-footer">
+                                    <p style={{fontSize: "1.3rem" }}>Gasto energético estimado</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-12 mt-5 col-lg-3">
                         <div className="card shadow text-center h-100">
                             <div className="card-body ">
                                 <LineChart chartData={Data3}></LineChart>
@@ -97,9 +95,36 @@ export default function EnergyIndicatorV2(){
                         </div>
                     </div>
                 </div>
-            </div>
-
-
+                <div className="row d-flex justify-content-center m-5 mt-0">
+                    <div className="col-12 col-lg-3 mt-5 d-flex flex-column">
+                        <div className="card shadow text-center h-100">
+                            <div className="card-body ">
+                                <LineChart chartData={Data3}></LineChart>
+                            </div>
+                            <div className="card-footer">
+                                    <p style={{fontSize: "1.3rem" }}>Gasto energético estimado</p>
+                            </div>
+                        </div>
+                        <div className="card mt-3 shadow text-center h-100">
+                            <div className="card-body ">
+                                <LineChart chartData={Data2}></LineChart>
+                            </div>
+                            <div className="card-footer">
+                                    <p style={{fontSize: "1.3rem" }}>Ultima semana</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-12 col-lg-9 mt-5">
+                        <div className="card shadow text-center h-100">
+                            <div className="card-body">
+                                <CutSvg></CutSvg>
+                            </div>
+                            <div className="card-footer">
+                                    <p style={{fontSize: "1.3rem" }}>Gasto por edificio</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </section>
     );
 }

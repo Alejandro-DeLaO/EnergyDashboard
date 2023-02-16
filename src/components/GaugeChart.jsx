@@ -1,7 +1,6 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
-
 const defaultData = {
   datasets: [
     {
@@ -74,7 +73,7 @@ const gaugeNeedle = {
 // return block
 function DoughnutChart({ chartData = defaultData }) {
   return (
-    <div className="chart-container">
+    <div className="chart-container" style={{height: "100%"}}>
       <Doughnut
         data={chartData}
         plugins={[gaugeNeedle]}

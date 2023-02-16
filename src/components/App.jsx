@@ -8,10 +8,12 @@ import SignUpPage from "../pages/SignUpPage/SignUpPage";
 import DashboardPage from "../pages/DashboardPage";
 import FooterComponent from "./FooterComponent";
 import EnergyIndicatorV2 from "../pages/EnergyIndicator/EnergyIndicatorV2";
+import EnergyIndicatorV3 from "../pages/EnergyIndicator/EnergyIndicatorV3";
 
 //Context
 import { AuthProvider } from "../context/AuthProvider";
 import RequiredAuth from "./RequireAuth";
+
 
 export default function App() {
     return (
@@ -23,6 +25,7 @@ export default function App() {
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/indicador/:section" element={<EnergyIndicator />} />
+                    <Route path="/indicador/biblioteca" element={<EnergyIndicatorV3 />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/signup" element={<SignUpPage />} />
                     <Route path="/test" element={<EnergyIndicatorV2 />} />

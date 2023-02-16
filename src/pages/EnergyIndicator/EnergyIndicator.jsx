@@ -3,7 +3,7 @@ import { Data } from "../../utils/Data";
 import GaugeChart from "../../components/GaugeChart";
 import HorizontalBarChart from "../../components/HorizontalBarChart";
 import Carousel from "react-bootstrap/Carousel";
-import './styles/cards-heights.css'
+import './styles/cards-heights-v1.css'
 
 
 
