@@ -52,12 +52,12 @@ export default function EnergyIndicatorV2(){
             <div className="container-fluid col-12">
                 <div className="row d-flex justify-content-center m-5 mb-0">
                     <div className="col-12">
-                        <div className="card shadow text-center">
+                        <div className="card shadow text-center h-100">
                             <div class="card-header ">
                                 <h5>Energia consumida en edificio 1</h5>
                             </div>
-                            <div className="card-body" id="gauge-card-body">
-                                <GaugeChart/>
+                            <div className="card-body"  id="gauge-card-body-dos">
+                                <GaugeChart></GaugeChart>
                             </div>
                             <div className="card-footer">
                                     <h1 style={{ color: "#edbd02" }}>50KWh</h1>
