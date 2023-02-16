@@ -9,22 +9,34 @@ import DashboardPage from "../pages/DashboardPage";
 import FooterComponent from "./FooterComponent";
 import EnergyIndicatorV2 from "../pages/EnergyIndicator/EnergyIndicatorV2";
 
+//Context
+import { AuthProvider } from "../context/AuthProvider";
+import RequiredAuth from "./RequireAuth";
+
 export default function App() {
     return (
         <BrowserRouter>
-            <NavBarComponent />
 
-            <Routes>
+            <AuthProvider>
+                <NavBarComponent />
 
-                <Route path="/" element={<HomePage />} />
-                <Route path="/indicador/:section" element={<EnergyIndicator />}/>
-                <Route path="/dashboard" element={<DashboardPage />}/>
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignUpPage />}/>
-                <Route path="/test" element={<EnergyIndicatorV2 />}/>
-            </Routes>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/indicador/:section" element={<EnergyIndicator />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/signup" element={<SignUpPage />} />
+                    <Route path="/test" element={<EnergyIndicatorV2 />} />
 
-            <FooterComponent/>
+                    <Route element={<RequiredAuth allowedRoles={['admin']}/>}>
+
+                        <Route path="/dashboard" element={<DashboardPage />} />
+
+                    </Route>
+                </Routes>
+
+                <FooterComponent />
+            </AuthProvider>
+
         </BrowserRouter>
     );
 }

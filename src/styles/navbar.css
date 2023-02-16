@@ -1,0 +1,78 @@
+.auth-dropdown{
+    width: 30vw !important;
+}
+
+.user-button{
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid var(--primary-color);
+    background-color: var(--primary-color);
+}
+
+.user-button:hover{
+    color: var(--primary-color);
+    background-color: white;
+}
+
+@media (min-width: 1551px) {
+    .auth-dropdown{
+        width: 15vw !important;
+    }
+}
+
+@media (max-width: 1550px) {
+    .auth-dropdown{
+        width: 20vw !important;
+    }
+}
+
+@media (max-width: 1350px) {
+    .auth-dropdown{
+        width: 20vw !important;
+    }
+}
+
+@media (max-width: 1200px) {
+    .auth-dropdown{
+        width: 25vw !important;
+    }
+}
+
+@media (max-width: 1000px) {
+    .auth-dropdown{
+        width: 30vw !important;
+    }
+}
+
+@media (max-width: 800px) {
+    .auth-dropdown{
+        width: 40vw !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .menu-button{
+        display: block;
+    }
+}
+
+@media (max-width: 600px) {
+    .auth-dropdown{
+        width: 50vw !important;
+    }
+}
+
+@media (max-width: 450px) {
+    .auth-dropdown{
+        width: 60vw !important;
+    }
+}
+
+@media (max-width: 360px) {
+    .auth-dropdown{
+        width: 70vw !important;
+    }
+}
