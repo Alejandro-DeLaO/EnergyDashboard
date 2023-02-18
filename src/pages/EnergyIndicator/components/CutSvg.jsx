@@ -5,14 +5,33 @@ export default function CutSvg(){
     return (
         <section >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1227.000000 800.000000" id="map-svg" style={{backgroundColor:"black", maxHeight: "500px"}}>
+            <g id ="waves">
+                <g id ="medicina">
+                    <path transform="translate(700,600) scale(0.25,0.2)" fill-opacity='0.5'/>
+                    <path transform="translate(700,600) scale(0.25,0.2)" fill-opacity='0.7'/>
+                    <path transform="translate(700,600) scale(0.25,0.2)" fill-opacity='0.9'/>
+                </g>
 
-            <path id="medicina" transform="translate(700,600) scale(0.25,0.2)" fill-opacity='1'/>
+                <g id="energia">
+                    <path transform="translate(300,430) scale(0.1,0.4)" fill-opacity='0.5'/>
+                    <path transform="translate(300,430) scale(0.1,0.4)" fill-opacity='0.7'/>
+                    <path transform="translate(300,430) scale(0.1,0.4)" fill-opacity='0.9'/>
+                </g>
+                    
+                <g id="biblioteca">
+                    <path transform="translate(445,215) scale(0.1,0.4)" fill-opacity='0.5'/>
+                    <path transform="translate(445,215) scale(0.1,0.4)" fill-opacity='0.7'/>
+                    <path transform="translate(445,215) scale(0.1,0.4)" fill-opacity='0.9'/>
+                </g>
 
-            <path id="energia" transform="translate(300,430) scale(0.1,0.4)" fill-opacity='1'/>
+                <g id="atencion">
+                    <path transform="translate(180,445) scale(0.09,0.2)" fill-opacity='0.5'/>
+                    <path transform="translate(180,445) scale(0.09,0.2)" fill-opacity='0.7'/>
+                    <path transform="translate(180,445) scale(0.09,0.2)" fill-opacity='0.9'/>
+                </g>
 
-            <path id="biblioteca" transform="translate(445,215) scale(0.1,0.4)" fill-opacity='1'/>
-            
-            <path id="atencion" transform="translate(180,445) scale(0.09,0.2)" fill-opacity='1'/>
+            </g>
+
 
             <g transform="translate(0.000000,800.000000) scale(0.100000,-0.100000)" fill="white">
             <path d="M0 4000 l0 -4000 6135 0 6135 0 0 4000 0 4000 -6135 0 -6135 0 0
