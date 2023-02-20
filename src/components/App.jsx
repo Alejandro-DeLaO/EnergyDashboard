@@ -1,7 +1,8 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import NavBarComponent from "./NavBarComponent";
-import HomePage from "../pages/HomePage";
+// import NavBarComponent from "./NavBarComponent";
+import SideNavBarComponent from "./SideNavBarComponent";
+import HomePage from "../pages/HomePage/HomePage";
 import EnergyIndicator from "../pages/EnergyIndicator/EnergyIndicator";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import SignUpPage from "../pages/SignUpPage/SignUpPage";
@@ -14,13 +15,13 @@ import EnergyIndicatorV3 from "../pages/EnergyIndicator/EnergyIndicatorV3";
 import { AuthProvider } from "../context/AuthProvider";
 import RequiredAuth from "./RequireAuth";
 
-
 export default function App() {
     return (
         <BrowserRouter>
 
             <AuthProvider>
-                <NavBarComponent />
+                {/* <NavBarComponent /> */}
+                <SideNavBarComponent />
 
                 <Routes>
                     <Route path="/" element={<HomePage />} />
