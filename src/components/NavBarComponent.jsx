@@ -9,7 +9,7 @@ export default function NavBarComponent() {
 
     return (
         <div style={{ fontSize: "1.3rem" }}>
-            <nav className="navbar navbar-expand-lg primary-background">
+            <nav className="navbar navbar-expand-lg" style={{backgroundColor: "var(--primary-color)"}}>
                 <div className="container-fluid d-flex justify-content-center">
                     <Link to='/' className="navbar-brand" style={{ fontSize: "30px", color: "white" }}>
                         <p className="m-0 text-wrap text-center">Sistema de monitoreo</p>

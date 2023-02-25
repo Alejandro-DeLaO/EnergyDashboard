@@ -21,8 +21,8 @@ function LoginForm() {
       navigate(from, { replace: true });
     } catch (error) {
       console.log(error);
-      if (error.response && error.response.data.error.statusCode === 401) {
-        Swal.fire('Error', 'Correo o contraseña incorrectos!', 'error');
+      if (error.response && error.response.data.status === 401) {
+        Swal.fire('Error', error.response.data.error, 'error');
         navigate('/login');
       } else Swal.fire('Error', 'Algo ha salido mal, intenta de nuevo.' + error, 'error');
     }

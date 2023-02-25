@@ -8,7 +8,7 @@ export default function HomePage() {
     const randomImg = "/assets/homepageImg" + randomNum + ".png";
 
     return (
-        <section className="pt-3 pb-5 row container-xxl m-auto">
+        <section className="pt-4 pb-5 row container-xxl m-auto">
             <div className="homepage-container mb-5" style={{ display: "flex", justifyContent: "space-between" }}>
                 <div className="d-flex justify-content-center align-items-center m-auto" style={{ width: "100%", fontFamily: "jost" }}>
                     <div className="text-container d-grid justify-content-center align-items-center m-auto" style={{ width: "65%", textAlign: "center" }}>
