@@ -5,8 +5,6 @@ import HorizontalBarChart from "../../components/HorizontalBarChart";
 import Carousel from "react-bootstrap/Carousel";
 import './styles/cards-heights-v1.css'
 
-
-
 export default function EnergyIndicator(){
     const [chartData] = useState({
         labels: Data.map((data) => data.year),

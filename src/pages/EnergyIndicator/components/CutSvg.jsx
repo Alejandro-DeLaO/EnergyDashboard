@@ -3,7 +3,7 @@ import "./cut-svg.styles.css"
 
 export default function CutSvg(){
     return (
-        <section >
+        <section>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1227.000000 800.000000" id="map-svg" style={{backgroundColor:"black", maxHeight: "500px"}}>
             <g id ="waves">
                 <g id ="medicina">

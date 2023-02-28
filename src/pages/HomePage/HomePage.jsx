@@ -1,6 +1,6 @@
 import React from "react";
 import SectionComponent from "./components/SectionComponent";
-import '../../styles/homepage.css'
+import '../../styles/homepage.css';
 
 export default function HomePage() {
 
@@ -32,7 +32,7 @@ export default function HomePage() {
                 <SectionComponent to='/indicador/instituto-energias-renovables' img='/assets/linkImg1.png' text='Instituto de energias renovables' elevation='-20%' />
                 <SectionComponent to='/indicador/centro-atencion-estudiantes' img='/assets/linkImg2.png' text='Centro de atención a estudiantes' elevation='-25%' />
                 <SectionComponent to='/indicador/biblioteca' img='/assets/linkImg3.png' text='Biblioteca universitaria' elevation="-20%" />
-                <SectionComponent to='/indicador/ciencias-salud' img='/assets/linkImg4.png' text='Ciencias de la salud' elevation="-20%" />
+                <SectionComponent to='/indicador/plantel2' img='/assets/linkImg4.png' text='Ciencias de la salud' elevation="-20%" />
                 <SectionComponent to='/test' img='/assets/linkImg5.png' text='Monitoreo' elevation="-20%" />
             </div>
         </section>

@@ -16,7 +16,7 @@ function SideNavBarComponent() {
           {/* Side button */}
           {
             location && location.pathname !== "/" &&
-            <button className="navbar-toggler me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+            <button style={{border: "none"}} className="navbar-toggler me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
               <span className="navbar-toggler-icon"></span>
             </button>
           }

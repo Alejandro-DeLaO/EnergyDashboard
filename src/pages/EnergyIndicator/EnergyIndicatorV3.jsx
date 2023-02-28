@@ -50,10 +50,10 @@ export default function EnergyIndicatorV3(){
     });
     return (
         <section>
-                <div className="row d-flex justify-content-center m-5 mt-0 mb-0">
+                <div className="row d-flex justify-content-center mx-5">
                     <div className="col-12 mt-5 col-lg-3">
                         <div className="card shadow text-center h-100">
-                        <div class="card-header ">
+                            <div class="card-header ">
                                 <h5>Energia consumida en edificio 1</h5>
                             </div>
                             <div className="card-body" id="gauge-card-body">

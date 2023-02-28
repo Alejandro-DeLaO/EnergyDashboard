@@ -4,7 +4,7 @@ import "../styles/footer.css"
 
 export default function FooterComponent() {
     return (
-        <footer>
+        <footer className="container-xxl">
             <div className="row d-flex justify-content-center py-5 set-text">
                 <div className="col-sm d-flex flex-column align-items-center justify-content-center">
                     <Link className="text-decoration-none text-center">
