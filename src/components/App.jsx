@@ -16,6 +16,9 @@ import EnergyIndicatorV5 from "../pages/EnergyIndicatorV4/EnergyIndicatorV5";
 //Context
 import { AuthProvider } from "../context/AuthProvider";
 import RequiredAuth from "./RequireAuth";
+import AdministratorPage from "../pages/AdministratorPage/AdministratorPage";
+import UploadFileComponent from "../pages/AdministratorPage/components/UploadFileComponent";
+import AdministratorIndexComponent from "../pages/AdministratorPage/components/AdministratorIndexComponent";
 
 export default function App() {
     return (
@@ -36,11 +39,16 @@ export default function App() {
                     <Route path="/indicador/plantel" element={<EnergyIndicatorV4 />} />
                     <Route path="/indicador/plantel2" element={<EnergyIndicatorV5 />} />
 
-
-                    <Route element={<RequiredAuth allowedRoles={['admin']}/>}>
-
+                    <Route element={<RequiredAuth allowedRoles={['admin']} />}>
                         <Route path="/dashboard" element={<DashboardPage />} />
+                    </Route>
 
+                    <Route element={<RequiredAuth allowedRoles={['admin']} />}>
+                        <Route path="/administrador" element={<AdministratorPage />}>
+                            <Route index element={<AdministratorIndexComponent />} />
+                            <Route path="index" element={<AdministratorIndexComponent />} />
+                            <Route path="subirDatos/:type" element={<UploadFileComponent />} />
+                        </Route>
                     </Route>
                 </Routes>
 

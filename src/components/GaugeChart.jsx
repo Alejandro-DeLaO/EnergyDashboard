@@ -36,8 +36,12 @@ const gaugeNeedle = {
     const angle = Math.PI + (1 / dataTotal) * needleValue * Math.PI;
     const cx = width / 2;
     const cy = chart._metasets[0].data[0].y;
-    console.log(ctx);
+    
+    
+    //console.log(ctx);
 
+
+    
     // needle
     ctx.translate(cx, cy);
     ctx.rotate(angle);

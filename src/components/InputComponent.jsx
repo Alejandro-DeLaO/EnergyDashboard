@@ -5,7 +5,9 @@ export default function InputComponent(props) {
 
     const validatorsAndEvents = {};
 
-    if (props.required) validatorsAndEvents.required = "Campo requerido.";
+    if (props.required && props.type === 'file') validatorsAndEvents.required = "Se requiere un archivo.";
+    else if (props.required) validatorsAndEvents.required = "Campo requerido.";
+    
     if (props.pattern) validatorsAndEvents.pattern = props.pattern.pattern;
     if (props.maxLength) validatorsAndEvents.maxLength = props.maxLength.maxLength;
     if (props.minLength) validatorsAndEvents.minLength = props.minLength.minLength;

@@ -1,0 +1,22 @@
+.back-button {
+    width: 100px;
+    background-color: #edbd02 !important;
+}
+
+@media (min-width: 992px) {
+    .file-image {
+        width: 75%;
+    }
+}
+
+@media (max-width: 991px) {
+    .file-image {
+        width: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    .file-image {
+        width: 50%;
+    }
+}
