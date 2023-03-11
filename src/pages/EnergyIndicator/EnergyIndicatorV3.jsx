@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Data } from "../../utils/Data";
-import { MoreData } from "../../utils/MoreData";
 import { EvenMoreData } from "../../utils/EvenMoreData";
 import GaugeChart from "../../components/GaugeChart";
 import LineChart from "../../components/LineChart";
@@ -12,6 +11,7 @@ import * as energyConsumptionService from '../../services/EnergyConsumption';
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { Line } from "react-chartjs-2";
 
 export default function EnergyIndicatorV3() {
 
@@ -32,10 +32,10 @@ export default function EnergyIndicatorV3() {
                 setEnergyConsumptions(response.data.data.energyConsumptions);
 
                 //Get filtering.
-                const perDay = await energyConsumptionService.getEnergyConsumptionsPerDay(auth.token, {building: '640a3ba618418225de453ef8', date: new Date('02/01/2023')});
+                const perDay = await energyConsumptionService.getEnergyConsumptionsPerDay(auth.token, {building: '640a3ba618418225de453ef8', date: new Date('02/26/2023')});
                 setEnergyConsumptionsOfTheDay(perDay.data.data.energyConsumptionsOfThatDay);
 
-                const perWeek = await energyConsumptionService.getEnergyConsumptionsPerWeek(auth.token, {building: '640a3ba618418225de453ef8', date: new Date('02/01/2023')});
+                const perWeek = await energyConsumptionService.getEnergyConsumptionsPerWeek(auth.token, {building: '640a3ba618418225de453ef8', date: new Date('02/20/2023')});
                 setEnergyConsumptionsOfTheWeek(perWeek.data.data.energyConsumptionsOfThatWeek);
 
                 const perMonth = await energyConsumptionService.getEnergyConsumptionsPerMonth(auth.token, {building: '640a3ba618418225de453ef8', date: new Date('02/01/2023')});
@@ -55,6 +55,7 @@ export default function EnergyIndicatorV3() {
         getEnergyConsumptions();
     }, []);
 
+    console.log(energyConsumptions)
     const [Data1] = useState({
         labels: Data.map((data) => data.year),
         datasets: [
@@ -68,19 +69,103 @@ export default function EnergyIndicatorV3() {
             },
         ],
     });
-    const [Data2] = useState({
-        labels: MoreData.map((data) => data.year),
-        datasets: [
-            {
-                label: "Energia consumida ",
-                data: MoreData.map((data) => data.userGain),
-                borderColor: "black",
-                borderWidth: 2,
-                borderRadius: 5,
-                barThickness: 40,
-            },
-        ],
-    });
+
+    const lastMonthGraph = energyConsumptionsOfTheMonth[0] ? (
+        <Line
+            data = {{
+                labels: energyConsumptionsOfTheMonth.map((data) => data.createdAt),
+                datasets: [
+                    {
+                        label: "Energia consumida ",
+                        data: energyConsumptionsOfTheMonth.map((data) => data.kwhr),
+                        borderColor: "blue",
+                        backgroundColor: "rgba(21, 209, 255, 0.4)",
+                        borderWidth: 1,
+                        fill: true,
+                        pointRadius: 0
+                    },
+                ],
+            }}
+            options={{
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    display: true,
+                  },
+                },
+                scales:{
+                    x: {
+                      display: false
+                    }
+                }
+              }}
+        />    
+    ) : null;
+    
+    const lastWeek = energyConsumptionsOfTheWeek[0] ? (
+        <Line
+            data = {{
+                labels: energyConsumptionsOfTheWeek.map((data) => data.createdAt),
+                datasets: [
+                    {
+                        label: "Energia consumida ",
+                        data: energyConsumptionsOfTheWeek.map((data) => data.kwhr),
+                        borderColor: "blue",
+                        backgroundColor: "rgba(21, 209, 255, 0.4)",
+                        borderWidth: 1,
+                        fill: true,
+                        pointRadius: 0
+                    },
+                ],
+            }}
+            options={{
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    display: true,
+                  },
+                },
+                scales:{
+                    x: {
+                      display: false
+                    }
+                }
+              }}
+        />    
+    ) : null;
+
+    const lastDay = energyConsumptionsOfTheDay[0] ? (
+        <Line
+            data = {{
+                labels: energyConsumptionsOfTheDay.map((data) => data.createdAt),
+                datasets: [
+                    {
+                        label: "Energia consumida ",
+                        data: energyConsumptionsOfTheDay.map((data) => data.kwhr),
+                        borderColor: "blue",
+                        backgroundColor: "rgba(21, 209, 255, 0.4)",
+                        borderWidth: 1,
+                        fill: true,
+                        pointRadius: 0
+                    },
+                ],
+            }}
+            options={{
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    display: true,
+                  },
+                },
+                scales:{
+                    x: {
+                      display: false
+                    }
+                }
+              }}
+        />    
+    ) : null;
+
     const [Data3] = useState({
         labels: EvenMoreData.map((data) => data.year),
         datasets: [
@@ -113,30 +198,30 @@ export default function EnergyIndicatorV3() {
                 <div className="col-12 mt-5 col-lg-3">
                     <div className="card shadow text-center h-100">
                         <div className="card-body ">
-                            <BarChart chartData={Data1}></BarChart>
+                            {lastMonthGraph}
                         </div>
                         <div className="card-footer">
-                            <p style={{ fontSize: "1.3rem" }}>Energia consumida por edificio</p>
+                            <p style={{ fontSize: "1.3rem" }}>Ultimo mes</p>
                         </div>
                     </div>
                 </div>
                 <div className="col-12 mt-5 col-lg-3">
                     <div className="card shadow text-center h-100">
                         <div className="card-body ">
-                            <LineChart chartData={Data3}></LineChart>
+                            {lastWeek}
                         </div>
                         <div className="card-footer">
-                            <p style={{ fontSize: "1.3rem" }}>Gasto energético estimado</p>
+                            <p style={{ fontSize: "1.3rem" }}>Ultima semana</p>
                         </div>
                     </div>
                 </div>
                 <div className="col-12 mt-5 col-lg-3">
                     <div className="card shadow text-center h-100">
                         <div className="card-body ">
-                            <LineChart chartData={Data3}></LineChart>
+                            {lastDay}
                         </div>
                         <div className="card-footer">
-                            <p style={{ fontSize: "1.3rem" }}>Gasto energético estimado</p>
+                            <p style={{ fontSize: "1.3rem" }}>Dia anterior</p>
                         </div>
                     </div>
                 </div>
@@ -153,10 +238,10 @@ export default function EnergyIndicatorV3() {
                     </div>
                     <div className="card mt-3 shadow text-center h-100">
                         <div className="card-body ">
-                            <LineChart chartData={Data2}></LineChart>
+                            <BarChart chartData={Data1}></BarChart>
                         </div>
                         <div className="card-footer">
-                            <p style={{ fontSize: "1.3rem" }}>Ultima semana</p>
+                            <p style={{ fontSize: "1.3rem" }}>Energia consumida por edificio</p>
                         </div>
                     </div>
                 </div>
