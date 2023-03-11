@@ -20,26 +20,27 @@ export default function EnergyIndicatorV3() {
     const [photovoltaicGenerations, setPhotovoltaicGenerations] = useState([]);
     const [energyConsumptions, setEnergyConsumptions] = useState([]);
 
-    useEffect(() => {
-        const getPhotovoltaicGenerations = async () => {
-            try {
-                const response = await photovoltaicGenerationService.getPhotovoltaicGenerations(auth.token, {building: '640a3ba618418225de453ef8'});
-                setPhotovoltaicGenerations(response.data.data.photovoltaicGenerations);
-            } catch (error) {
-                if (error.response && error.response.data.status === 400) Swal.fire('Error', error.response.data.error, 'error');
-                else if (error.response && (error.response.data.status === 401 || error.response.data.status === 403)) {
-                    //If token has expired.
-                    Swal.fire('Error', error.response.data.error, 'error');
-                    navigate('/login');
-                }
-                else Swal.fire('Error', `Algo ha salido mal:(, ${error}`, 'error');
-            }
-        };
+    //Filtering by range of time.
+    const [energyConsumptionsOfTheDay, setEnergyConsumptionsOfTheDay] = useState([]);
+    const [energyConsumptionsOfTheWeek, setEnergyConsumptionsOfTheWeek] = useState([]);
+    const [energyConsumptionsOfTheMonth, setEnergyConsumptionsOfTheMonth] = useState([]);
 
+    useEffect(() => {
         const getEnergyConsumptions = async () => {
             try {
                 const response = await energyConsumptionService.getEnergyConsumptions(auth.token, {building: '640a3ba618418225de453ef8'});
                 setEnergyConsumptions(response.data.data.energyConsumptions);
+
+                //Get filtering.
+                const perDay = await energyConsumptionService.getEnergyConsumptionsPerDay(auth.token, {building: '640a3ba618418225de453ef8', date: new Date('02/01/2023')});
+                setEnergyConsumptionsOfTheDay(perDay.data.data.energyConsumptionsOfThatDay);
+
+                const perWeek = await energyConsumptionService.getEnergyConsumptionsPerWeek(auth.token, {building: '640a3ba618418225de453ef8', date: new Date('02/01/2023')});
+                setEnergyConsumptionsOfTheWeek(perWeek.data.data.energyConsumptionsOfThatWeek);
+
+                const perMonth = await energyConsumptionService.getEnergyConsumptionsPerMonth(auth.token, {building: '640a3ba618418225de453ef8', date: new Date('02/01/2023')});
+                setEnergyConsumptionsOfTheMonth(perMonth.data.data.energyConsumptionsOfThatMonth);
+
             } catch (error) {
                 if (error.response && error.response.data.status === 400) Swal.fire('Error', error.response.data.error, 'error');
                 else if (error.response && (error.response.data.status === 401 || error.response.data.status === 403)) {
@@ -50,11 +51,8 @@ export default function EnergyIndicatorV3() {
                 else Swal.fire('Error', `Algo ha salido mal:(, ${error}`, 'error');
             }
         };
-
-        //Call both functions to get information.
-        getPhotovoltaicGenerations();
+        //Call both function.
         getEnergyConsumptions();
-
     }, []);
 
     const [Data1] = useState({

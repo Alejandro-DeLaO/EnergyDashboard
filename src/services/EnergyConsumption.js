@@ -5,6 +5,18 @@ export function getEnergyConsumptions(token, parameters) {
     return axios.get(`${BACKEND_URL}energyConsumptions`, { headers: { authorization: `Bearer ${token}` }, params: parameters });
 }
 
+export function getEnergyConsumptionsPerDay(token, parameters) {
+    return axios.get(`${BACKEND_URL}energyConsumptions/day`, { headers: { authorization: `Bearer ${token}` }, params: parameters });
+}
+
+export function getEnergyConsumptionsPerWeek(token, parameters) {
+    return axios.get(`${BACKEND_URL}energyConsumptions/week`, { headers: { authorization: `Bearer ${token}` }, params: parameters });
+}
+
+export function getEnergyConsumptionsPerMonth(token, parameters) {
+    return axios.get(`${BACKEND_URL}energyConsumptions/month`, { headers: { authorization: `Bearer ${token}` }, params: parameters });
+}
+
 export function getEnergyConsumption(id, token){
     return axios.get(`${BACKEND_URL}energyConsumptions/${id}`, {headers: {authorization: `Bearer ${token}`}});
 }
