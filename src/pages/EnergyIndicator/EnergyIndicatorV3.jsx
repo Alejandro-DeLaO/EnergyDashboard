@@ -12,6 +12,7 @@ import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { Line } from "react-chartjs-2";
+import 'chartjs-adapter-date-fns';
 
 export default function EnergyIndicatorV3() {
 
@@ -55,7 +56,6 @@ export default function EnergyIndicatorV3() {
         getEnergyConsumptions();
     }, []);
 
-    console.log(energyConsumptions)
     const [Data1] = useState({
         labels: Data.map((data) => data.year),
         datasets: [
@@ -73,7 +73,7 @@ export default function EnergyIndicatorV3() {
     const lastMonthGraph = energyConsumptionsOfTheMonth[0] ? (
         <Line
             data = {{
-                labels: energyConsumptionsOfTheMonth.map((data) => data.createdAt),
+                labels: (energyConsumptionsOfTheMonth.map((data) => data.createdAt)).map((date) => new Date(date)),
                 datasets: [
                     {
                         label: "Energia consumida ",
@@ -95,8 +95,20 @@ export default function EnergyIndicatorV3() {
                 },
                 scales:{
                     x: {
-                      display: false
-                    }
+                        type: 'time',
+                        time: {
+                          unit: 'week',
+                          displayFormats:{
+                              week: 'dd/MM'
+                          }
+                        },
+                        grid: {
+                          tickColor: 'rgba(75,192,192,1)',
+                          color : 'rgba(75,192,192,1)'
+                        },
+                        ticks:{
+                        }
+                      },
                 }
               }}
         />    
@@ -105,7 +117,7 @@ export default function EnergyIndicatorV3() {
     const lastWeek = energyConsumptionsOfTheWeek[0] ? (
         <Line
             data = {{
-                labels: energyConsumptionsOfTheWeek.map((data) => data.createdAt),
+                labels: (energyConsumptionsOfTheWeek.map((data) => data.createdAt)).map((date) => new Date(date)),
                 datasets: [
                     {
                         label: "Energia consumida ",
@@ -127,17 +139,33 @@ export default function EnergyIndicatorV3() {
                 },
                 scales:{
                     x: {
-                      display: false
-                    }
+                      bounds: 'ticks',
+                      offset: false,
+                      type: 'time',
+                      time: {
+                        unit: 'day',
+                        displayFormats:{
+                            day: 'MM/dd'
+                        }
+                      },
+                      grid: {
+                        offset: false,
+                        tickColor: 'rgba(75,192,192,1)',
+                        color : 'rgba(75,192,192,1)'
+                      }
+                    },
                 }
               }}
         />    
     ) : null;
 
+
+
+              
     const lastDay = energyConsumptionsOfTheDay[0] ? (
         <Line
             data = {{
-                labels: energyConsumptionsOfTheDay.map((data) => data.createdAt),
+                labels: (energyConsumptionsOfTheDay.map((data) => data.createdAt)).map((date) => new Date(date)),
                 datasets: [
                     {
                         label: "Energia consumida ",
@@ -159,7 +187,20 @@ export default function EnergyIndicatorV3() {
                 },
                 scales:{
                     x: {
-                      display: false
+                        bounds: 'ticks',
+                        offset: false,
+                        type: 'time',
+                        time: {
+                          unit: 'hour',
+                        },
+                        grid: {
+                          offset: false,
+                          tickColor: 'rgba(75,192,192,1)',
+                          color : 'rgba(75,192,192,1)'
+                        },
+                        ticks:{
+                          stepSize: 4
+                        }
                     }
                 }
               }}

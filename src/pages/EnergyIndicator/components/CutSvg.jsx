@@ -7,27 +7,27 @@ export default function CutSvg(){
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1227.000000 800.000000" id="map-svg" style={{backgroundColor:"black", maxHeight: "500px"}}>
             <g id ="waves">
                 <g id ="medicina">
-                    <path transform="translate(700,600) scale(0.25,0.2)" fill-opacity='0.5'/>
-                    <path transform="translate(700,600) scale(0.25,0.2)" fill-opacity='0.7'/>
-                    <path transform="translate(700,600) scale(0.25,0.2)" fill-opacity='0.9'/>
+                    <path transform="translate(700,600) scale(0.25,0.2)" fillOpacity='0.5'/>
+                    <path transform="translate(700,600) scale(0.25,0.2)" fillOpacity='0.7'/>
+                    <path transform="translate(700,600) scale(0.25,0.2)" fillOpacity='0.9'/>
                 </g>
 
                 <g id="energia">
-                    <path transform="translate(300,430) scale(0.1,0.4)" fill-opacity='0.5'/>
-                    <path transform="translate(300,430) scale(0.1,0.4)" fill-opacity='0.7'/>
-                    <path transform="translate(300,430) scale(0.1,0.4)" fill-opacity='0.9'/>
+                    <path transform="translate(300,430) scale(0.1,0.4)" fillOpacity='0.5'/>
+                    <path transform="translate(300,430) scale(0.1,0.4)" fillOpacity='0.7'/>
+                    <path transform="translate(300,430) scale(0.1,0.4)" fillOpacity='0.9'/>
                 </g>
                     
                 <g id="biblioteca">
-                    <path transform="translate(445,215) scale(0.1,0.4)" fill-opacity='0.5'/>
-                    <path transform="translate(445,215) scale(0.1,0.4)" fill-opacity='0.7'/>
-                    <path transform="translate(445,215) scale(0.1,0.4)" fill-opacity='0.9'/>
+                    <path transform="translate(445,215) scale(0.1,0.4)" fillOpacity='0.5'/>
+                    <path transform="translate(445,215) scale(0.1,0.4)" fillOpacity='0.7'/>
+                    <path transform="translate(445,215) scale(0.1,0.4)" fillOpacity='0.9'/>
                 </g>
 
                 <g id="atencion">
-                    <path transform="translate(180,445) scale(0.09,0.2)" fill-opacity='0.5'/>
-                    <path transform="translate(180,445) scale(0.09,0.2)" fill-opacity='0.7'/>
-                    <path transform="translate(180,445) scale(0.09,0.2)" fill-opacity='0.9'/>
+                    <path transform="translate(180,445) scale(0.09,0.2)" fillOpacity='0.5'/>
+                    <path transform="translate(180,445) scale(0.09,0.2)" fillOpacity='0.7'/>
+                    <path transform="translate(180,445) scale(0.09,0.2)" fillOpacity='0.9'/>
                 </g>
 
             </g>
