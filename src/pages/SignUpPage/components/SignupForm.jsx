@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import Input from "../../../components/Input";
+// import Input from "../../../components/Input";
 import InputComponent from "../../../components/InputComponent";
 import useAuth from "../../../hooks/useAuth";
 import * as authService from '../../../services/AuthService';
@@ -31,7 +31,7 @@ function SignupForm() {
   };
 
   return (
-    <div className="bg-light container shadow-lg" style={{ width: "60%", height: "auto", display: "flex", placeItems: "center", borderRadius: "20px" }}>
+    <div className="form-container bg-light container shadow" style={{ width: "70%", height: "auto", display: "flex", placeItems: "center", borderRadius: "20px" }}>
       <div className="p-3" style={{ width: "100%", height: "90%" }}>
         <div style={{ fontSize: "1.3rem" }}>
           <h2>Crea una cuenta</h2>

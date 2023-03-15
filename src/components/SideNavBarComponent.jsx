@@ -66,7 +66,7 @@ function SideNavBarComponent() {
                       <button className="user-button" onClick={logOut}>Cerrar sesión</button>
                     </>
                     : <>
-                      <Link to="login" className="user-button m-3">Iniciar sesión</Link>
+                      <Link to="login" className="user-button m-auto mb-3" style={{width: "100%"}}>Iniciar sesión</Link>
                       <Link to="signup" className="user-button">Crear una cuenta</Link>
                     </>
                 }

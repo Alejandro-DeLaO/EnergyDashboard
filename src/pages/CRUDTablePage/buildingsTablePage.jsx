@@ -12,11 +12,11 @@ function BuildingRow(props) {
         <>
           <td>{props.building.name}</td>
           <td>
-            <a class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#user-detail">
-              <i class="fa-solid fa-pen"></i>
+            <a href="..." className="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#user-detail">
+              <i className="fa-solid fa-pen"></i>
             </a>
-            <a class="btn btn-danger mx-2">
-              <i class="fa-solid fa-trash"></i>
+            <a href="..." className="btn btn-danger mx-2">
+              <i className="fa-solid fa-trash"></i>
             </a>
           </td>
         </>

@@ -29,11 +29,11 @@ function LoginForm() {
   };
 
   return (
-    <div className="bg-light container shadow-lg" style={{ width: "55%", height: "auto", display: "flex", placeItems: "center", borderRadius: "20px" }}>
+    <div className="form-container bg-light container shadow" style={{ width: "55%", height: "auto", display: "flex", placeItems: "center", borderRadius: "20px" }}>
       <div className="p-3" style={{ width: "100%", height: "90%" }}>
         <div style={{ fontSize: "1.3rem" }}>
           <h2>Inicia sesion</h2>
-          <p>Ingresa tus datos de usuario</p>
+          <p style={{fontSize: "1rem"}}>Ingresa tus datos de usuario</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)}>

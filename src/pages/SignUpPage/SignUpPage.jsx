@@ -3,11 +3,11 @@ import SignupForm from "./components/SignupForm";
 
 export default function SignUpPage() {
     return (
-        <div className="my-5" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "auto" }}>
-            <div className="position-relative" style={{ width: "100%", paddingLeft: "50px" }}>
+        <div className="page-container my-5" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "auto" }}>
+            <div className="register-img position-relative" style={{ width: "100%"}}>
                 <img src='/assets/bg-7.jpg' alt="imagen" height="auto" width="100%" />
             </div>
-            <div style={{ width: "100%", paddingRight: "20px" }}>
+            <div style={{ width: "100%" }}>
                 <SignupForm />
             </div>
         </div>
