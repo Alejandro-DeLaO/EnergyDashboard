@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import * as photovoltaicGenerationsService from '../../services/PhotovoltaicGeneration';
 
@@ -30,7 +31,7 @@ function PhotovoltaicGenerationRow(props) {
 
 function GeneratedEnergyPage() {
 
-  const { auth } = useAuth();
+  const { auth, expiredToken } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -61,7 +62,11 @@ function GeneratedEnergyPage() {
         setPhotovoltaicGenerations(photovoltaicGenerationsFromResponse);
         setTotalEnergyConsumptionsFound(totalPhotovoltaicGenerationsFromResponse);
       } catch (error) {
-
+        if (error.response && error.response.data.status === 401) {
+          expiredToken();
+          navigate('/login');
+        } else if (error.response && error.response.data.status === 400) Swal.fire('Error', error.response.data.error, 'error');
+        else Swal.fire('Error', 'Algo ha salido mal, intenta de nuevo.' + error, 'error');
       }
     };
     getEnergyConsumptions();

@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import ReactPaginate from 'react-paginate';
 import * as energyConsumptionService from '../../services/EnergyConsumption';
+import Swal from "sweetalert2";
 
 function EnergyConsumptionRow(props) {
   return (
@@ -30,7 +31,7 @@ function EnergyConsumptionRow(props) {
 
 function EnergyConsumptionPage() {
 
-  const { auth } = useAuth();
+  const { auth, expiredToken } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -61,7 +62,11 @@ function EnergyConsumptionPage() {
         setEnergyConsumptions(energyConsumptionsFromResponse);
         setTotalEnergyConsumptionsFound(totalEnergyConsumptionsFromResponse);
       } catch (error) {
-
+        if (error.response && error.response.data.status === 401) {
+          expiredToken();
+          navigate('/login');
+        } else if (error.response && error.response.data.status === 400) Swal.fire('Error', error.response.data.error, 'error');
+        else Swal.fire('Error', 'Algo ha salido mal, intenta de nuevo.' + error, 'error');
       }
     };
     getEnergyConsumptions();

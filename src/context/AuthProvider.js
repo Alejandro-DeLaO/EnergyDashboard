@@ -54,6 +54,13 @@ export const AuthProvider = ({ children }) => {
         })
     };
 
+    const expiredToken = () => {
+        setAuth({});
+        localStorage.clear();
+        Swal.fire('Sesión caducada', 'Vuelve a iniciar sesión!', 'info');
+        navigate({ pathname: '/login' });
+    };
+
     useEffect(() => {
         //Every time that page gets refreshed, get token from sessionStorage if exists.
         if (authService.ACCESS_TOKEN()) setAuth({ token: authService.ACCESS_TOKEN(), user: JSON.parse(authService.ACCESS_USER()) });
@@ -63,7 +70,7 @@ export const AuthProvider = ({ children }) => {
     return (
         <>
             {//Wait until auth is ready, either there is a token or a null object, just to be able to protect routes correctly.
-                auth && <AuthContext.Provider value={{ auth, setAuth, logOut, logIn, signUp }}>
+                auth && <AuthContext.Provider value={{ auth, setAuth, logOut, logIn, signUp, expiredToken }}>
                     {children}
                 </AuthContext.Provider>
             }

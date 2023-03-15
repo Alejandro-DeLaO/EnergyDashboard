@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import * as buildingService from '../../services/BuildingService';
 
@@ -25,7 +27,8 @@ function BuildingRow(props) {
 
 function BuildingsTablePage() {
 
-  const { auth } = useAuth();
+  const navigate = useNavigate();
+  const { auth, expiredToken } = useAuth();
   const [buildings, setBuildings] = useState();
 
   useEffect(() => {
@@ -33,9 +36,12 @@ function BuildingsTablePage() {
       try {
         const buildingsResponse = await buildingService.getBuildings(auth.token);
         setBuildings(buildingsResponse.data.data.buildings);
-        console.log(buildingsResponse);
       } catch (error) {
-
+        if (error.response && error.response.data.status === 401) {
+          expiredToken();
+          navigate('/login');
+        } else if (error.response && error.response.data.status === 400) Swal.fire('Error', error.response.data.error, 'error');
+        else Swal.fire('Error', 'Algo ha salido mal, intenta de nuevo.' + error, 'error');
       }
     };
     getBuildings();

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import * as userService from '../../services/UserService';
 
@@ -28,8 +30,9 @@ function UserRow(props) {
 
 function UsersTablePage() {
 
-  const { auth } = useAuth();
+  const navigate = useNavigate()
   const [users, setUsers] = useState();
+  const { auth, expiredToken } = useAuth();
 
   useEffect(() => {
     const getUsers = async () => {
@@ -37,7 +40,11 @@ function UsersTablePage() {
         const usersResponse = await userService.getUsers(auth.token);
         setUsers(usersResponse.data.data.users);
       } catch (error) {
-
+        if (error.response && error.response.data.status === 401) {
+          expiredToken();
+          navigate('/login');
+        } else if (error.response && error.response.data.status === 400) Swal.fire('Error', error.response.data.error, 'error');
+        else Swal.fire('Error', 'Algo ha salido mal, intenta de nuevo.' + error, 'error');
       }
     };
     getUsers();
