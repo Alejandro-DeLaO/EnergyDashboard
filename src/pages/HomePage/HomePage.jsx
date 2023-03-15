@@ -1,5 +1,5 @@
 import React from "react";
-import SectionComponent from "./components/SectionComponent";
+import SectionComponent from "../../components/SectionComponent";
 import '../../styles/homepage.css';
 
 export default function HomePage() {
@@ -34,7 +34,7 @@ export default function HomePage() {
                 <SectionComponent to='/indicador/biblioteca' img='/assets/linkImg3.png' text='Biblioteca universitaria' elevation="-20%" />
                 <SectionComponent to='/indicador/plantel2' img='/assets/linkImg4.png' text='Ciencias de la salud' elevation="-20%" />
                 <SectionComponent to='/test' img='/assets/linkImg5.png' text='Monitoreo' elevation="-20%" />
-                <SectionComponent to='/administrador' img='/assets/user.png' text='Administrador' elevation="-20%" />
+                <SectionComponent to='/administrador' img='/assets/user.png' text='Administrador' elevation="-20%" marginL="25px" />
             </div>
         </section>
     );

@@ -13,12 +13,22 @@ import EnergyIndicatorV3 from "../pages/EnergyIndicator/EnergyIndicatorV3";
 import EnergyIndicatorV4 from "../pages/EnergyIndicatorV4/EnergyIndicatorV4";
 import EnergyIndicatorV5 from "../pages/EnergyIndicatorV4/EnergyIndicatorV5";
 
+//Tables
+import UsersTablePage from "../pages/CRUDTablePage/UsersTablePage";
+import BuildingsTablePage from "../pages/CRUDTablePage/buildingsTablePage";
+import EnergyConsumptionPage from "../pages/CRUDTablePage/EnergyConsumptionPage";
+import GeneratedEnergyPage from "../pages/CRUDTablePage/GeneratedEnergyPage";
+
 //Context
 import { AuthProvider } from "../context/AuthProvider";
 import RequiredAuth from "./RequireAuth";
+
 import AdministratorPage from "../pages/AdministratorPage/AdministratorPage";
+import DataManipulationPage from "../pages/AdministratorPage/DataManipulationPage/DataManipulationPage";
+
+import UploadDataPage from "../pages/AdministratorPage/UploadDataPage/UploadDataPage";
 import UploadFileComponent from "../pages/AdministratorPage/components/UploadFileComponent";
-import AdministratorIndexComponent from "../pages/AdministratorPage/components/AdministratorIndexComponent";
+import UploadDataIndexComponent from "../pages/AdministratorPage/components/UploadDataIndexComponent";
 
 export default function App() {
     return (
@@ -36,6 +46,18 @@ export default function App() {
                     <Route path="/signup" element={<SignUpPage />} />
                     <Route path="/test" element={<EnergyIndicatorV2 />} />
 
+
+                    {/* Rutas de la pagina aministrador */}
+                    <Route path="/crud_table/usuarios" element={<UsersTablePage />} />
+                    <Route path="/crud_table/edificios" element={<BuildingsTablePage />} />
+                    <Route path="/crud_table/consumo_energetico" element={<EnergyConsumptionPage />} />
+                    <Route path="/crud_table/energia_generada" element={<GeneratedEnergyPage />} />
+
+                    <Route path="/admin" element={<AdministratorPage />} />
+                    <Route path="/data_manipulation" element={<DataManipulationPage />} />
+
+
+
                     <Route path="/indicador/plantel" element={<EnergyIndicatorV4 />} />
                     <Route path="/indicador/plantel2" element={<EnergyIndicatorV5 />} />
 
@@ -44,9 +66,9 @@ export default function App() {
                     </Route>
 
                     <Route element={<RequiredAuth allowedRoles={['admin']} />}>
-                        <Route path="/administrador" element={<AdministratorPage />}>
-                            <Route index element={<AdministratorIndexComponent />} />
-                            <Route path="index" element={<AdministratorIndexComponent />} />
+                        <Route path="/administrador" element={<UploadDataPage />}>
+                            <Route index element={<UploadDataIndexComponent />} />
+                            <Route path="index" element={<UploadDataIndexComponent />} />
                             <Route path="subirDatos/:type" element={<UploadFileComponent />} />
                         </Route>
                     </Route>

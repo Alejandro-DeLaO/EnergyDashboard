@@ -1,7 +1,7 @@
 import React from "react";
-import SectionComponent from "../../HomePage/components/SectionComponent";
+import SectionComponent from "../../../components/SectionComponent";
 
-export default function AdministratorIndexComponent() {
+export default function UploadDataIndexComponent() {
     return (
         <section>
             <h1 className="homepage-title fw-bold mt-3" style={{ fontSize: "4rem" }}>Subir datos</h1>
@@ -9,7 +9,7 @@ export default function AdministratorIndexComponent() {
 
             <div className="row d-flex justify-content-center section-container gap-3 m-auto my-5">
                 <SectionComponent to='/administrador/subirDatos/energiaConsumida' img='/assets/energyConsumption.png' text='Energía consumida' elevation="-20%" />
-                <SectionComponent to='/administrador/subirDatos/energiaGenerada' img='/assets/photovoltaicGeneration.png' text='Energia generada' elevation="-20%" />
+                <SectionComponent to='/administrador/subirDatos/energiaGenerada' img='/assets/photovoltaicGeneration.png' text='Energia generada' elevation="-20%" marginL="25px" />
             </div>
         </section>
     );
