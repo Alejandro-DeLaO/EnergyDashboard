@@ -1,9 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import useAuth from "../../hooks/useAuth";
+import * as userService from '../../services/UserService';
+
+function UserRow(props) {
+  return (
+    <tr>
+      {
+        props.user &&
+        <>
+          <td>{props.user.name}</td>
+          <td>{props.user.lastName}</td>
+          <td>{props.user.email}</td>
+          <td>{props.user.role}</td>
+          <td>
+            <a class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#user-detail">
+              <i class="fa-solid fa-pen"></i>
+            </a>
+            <a class="btn btn-danger mx-2">
+              <i class="fa-solid fa-trash"></i>
+            </a>
+          </td>
+        </>
+      }
+    </tr>
+  );
+}
 
 function UsersTablePage() {
-  return(
-    <section className="container mt-3 mb-5">
-      <div className="table-responsive">
+
+  const { auth } = useAuth();
+  const [users, setUsers] = useState();
+
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const usersResponse = await userService.getUsers(auth.token);
+        setUsers(usersResponse.data.data.users);
+      } catch (error) {
+
+      }
+    };
+    getUsers();
+  }, []);
+
+  return (
+    <section className="container my-5">
+      <div className="table-responsive-sm">
         <div className="table-wrapper">
 
           <div className="table-title mb-3">
@@ -13,7 +55,6 @@ function UsersTablePage() {
               </div>
               <div className="col-sm-6 d-flex m-auto justify-content-end">
                 <a href="/" className="btn btn-success me-1" data-toggle="modal"><i class="fa-solid fa-plus"></i> <span>Añadir usuario</span></a>
-                <a href="/" className="btn btn-danger ms-1" data-toggle="modal"><i class="fa-solid fa-trash"></i> <span>Eliminar</span></a>						
               </div>
             </div>
           </div>
@@ -22,12 +63,6 @@ function UsersTablePage() {
 
             <thead>
               <tr>
-                <th>
-                  <span className="custom-checkbox">
-                    <input type="checkbox" id="selectAll" />
-                    <label for="selectAll"></label>
-                  </span>
-                </th>
                 <th>Nombre</th>
                 <th>Apellidos</th>
                 <th>Correo</th>
@@ -37,142 +72,19 @@ function UsersTablePage() {
             </thead>
 
             <tbody>
-              <tr>
-                <td>
-                  <span className="custom-checkbox">
-                    <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                    <label for="checkbox1"></label>
-                  </span>
-                </td>
-                <td>Thomas Hardy</td>
-                <td>thomashardy@mail.com</td>
-                <td>89 Chiaroscuro Rd, Portland, USA</td>
-                <td>(171) 555-2222</td>
-                <td>
-                  <a href="#editEmployeeModal" className="edit" data-toggle="modal"><i class="fa-solid fa-pen"></i></a>
-                  <a href="#deleteEmployeeModal" className="delete" data-toggle="modal"><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-
-              <tr>
-                <td>
-                  <span className="custom-checkbox">
-                    <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                    <label for="checkbox1"></label>
-                  </span>
-                </td>
-                <td>Thomas Hardy</td>
-                <td>thomashardy@mail.com</td>
-                <td>89 Chiaroscuro Rd, Portland, USA</td>
-                <td>(171) 555-2222</td>
-                <td>
-                  <a href="#editEmployeeModal" className="edit" data-toggle="modal"><i class="fa-solid fa-pen"></i></a>
-                  <a href="#deleteEmployeeModal" className="delete" data-toggle="modal"><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span className="custom-checkbox">
-                    <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                    <label for="checkbox1"></label>
-                  </span>
-                </td>
-                <td>Thomas Hardy</td>
-                <td>thomashardy@mail.com</td>
-                <td>89 Chiaroscuro Rd, Portland, USA</td>
-                <td>(171) 555-2222</td>
-                <td>
-                  <a href="#editEmployeeModal" className="edit" data-toggle="modal"><i class="fa-solid fa-pen"></i></a>
-                  <a href="#deleteEmployeeModal" className="delete" data-toggle="modal"><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span className="custom-checkbox">
-                    <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                    <label for="checkbox1"></label>
-                  </span>
-                </td>
-                <td>Thomas Hardy</td>
-                <td>thomashardy@mail.com</td>
-                <td>89 Chiaroscuro Rd, Portland, USA</td>
-                <td>(171) 555-2222</td>
-                <td>
-                  <a href="#editEmployeeModal" className="edit" data-toggle="modal"><i class="fa-solid fa-pen"></i></a>
-                  <a href="#deleteEmployeeModal" className="delete" data-toggle="modal"><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span className="custom-checkbox">
-                    <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                    <label for="checkbox1"></label>
-                  </span>
-                </td>
-                <td>Thomas Hardy</td>
-                <td>thomashardy@mail.com</td>
-                <td>89 Chiaroscuro Rd, Portland, USA</td>
-                <td>(171) 555-2222</td>
-                <td>
-                  <a href="#editEmployeeModal" className="edit" data-toggle="modal"><i class="fa-solid fa-pen"></i></a>
-                  <a href="#deleteEmployeeModal" className="delete" data-toggle="modal"><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span className="custom-checkbox">
-                    <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                    <label for="checkbox1"></label>
-                  </span>
-                </td>
-                <td>Thomas Hardy</td>
-                <td>thomashardy@mail.com</td>
-                <td>89 Chiaroscuro Rd, Portland, USA</td>
-                <td>(171) 555-2222</td>
-                <td>
-                  <a href="#editEmployeeModal" className="edit" data-toggle="modal"><i class="fa-solid fa-pen"></i></a>
-                  <a href="#deleteEmployeeModal" className="delete" data-toggle="modal"><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span className="custom-checkbox">
-                    <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                    <label for="checkbox1"></label>
-                  </span>
-                </td>
-                <td>Thomas Hardy</td>
-                <td>thomashardy@mail.com</td>
-                <td>89 Chiaroscuro Rd, Portland, USA</td>
-                <td>(171) 555-2222</td>
-                <td>
-                  <a href="#editEmployeeModal" className="edit" data-toggle="modal"><i class="fa-solid fa-pen"></i></a>
-                  <a href="#deleteEmployeeModal" className="delete" data-toggle="modal"><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span className="custom-checkbox">
-                    <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                    <label for="checkbox1"></label>
-                  </span>
-                </td>
-                <td>Thomas Hardy</td>
-                <td>thomashardy@mail.com</td>
-                <td>89 Chiaroscuro Rd, Portland, USA</td>
-                <td>(171) 555-2222</td>
-                <td>
-                  <a href="#editEmployeeModal" className="edit" data-toggle="modal"><i class="fa-solid fa-pen"></i></a>
-                  <a href="#deleteEmployeeModal" className="delete" data-toggle="modal"><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-
+              {
+                users ? users.map((user, index) => {
+                  return <UserRow key={index} user={user} />
+                })
+                  :
+                  <p>Aun no hay usuarios</p>
+              }
             </tbody>
 
           </table>
         </div>
       </div>
-    </section>  
+    </section>
   );
 }
 

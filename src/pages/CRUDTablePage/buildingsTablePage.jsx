@@ -1,9 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import useAuth from "../../hooks/useAuth";
+import * as buildingService from '../../services/BuildingService';
+
+function BuildingRow(props) {
+  return (
+    <tr>
+      {
+        props.building &&
+        <>
+          <td>{props.building.name}</td>
+          <td>
+            <a class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#user-detail">
+              <i class="fa-solid fa-pen"></i>
+            </a>
+            <a class="btn btn-danger mx-2">
+              <i class="fa-solid fa-trash"></i>
+            </a>
+          </td>
+        </>
+      }
+    </tr>
+  );
+}
 
 function BuildingsTablePage() {
-  return(
+
+  const { auth } = useAuth();
+  const [buildings, setBuildings] = useState();
+
+  useEffect(() => {
+    const getBuildings = async () => {
+      try {
+        const buildingsResponse = await buildingService.getBuildings(auth.token);
+        setBuildings(buildingsResponse.data.data.buildings);
+        console.log(buildingsResponse);
+      } catch (error) {
+
+      }
+    };
+    getBuildings();
+  }, []);
+
+  return (
     <section className="container mt-3">
-      <div className="table-responsive">
+      <div className="table-responsive-sm">
         <div className="table-wrapper">
 
           <div className="table-title mb-3">
@@ -13,7 +53,6 @@ function BuildingsTablePage() {
               </div>
               <div className="col-sm-6 d-flex m-auto justify-content-end">
                 <a href="/" className="btn btn-success me-1" data-toggle="modal"><i class="fa-solid fa-plus"></i> <span>Añadir edificio</span></a>
-                <a href="/" className="btn btn-danger ms-1" data-toggle="modal"><i class="fa-solid fa-trash"></i> <span>Eliminar</span></a>						
               </div>
             </div>
           </div>
@@ -22,104 +61,25 @@ function BuildingsTablePage() {
 
             <thead>
               <tr>
-                <th>
-                  <span className="custom-checkbox">
-                    <input type="checkbox" id="selectAll" />
-                    <label for="selectAll"></label>
-                  </span>
-                </th>
                 <th>Edificio</th>
                 <th>Acciones</th>
               </tr>
             </thead>
 
             <tbody>
-              <tr>
-                <td>
-                  <span className="custom-checkbox">
-                    <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                    <label for="checkbox1"></label>
-                  </span>
-                </td>
-                <td>Edificio A</td>
-                <td>
-                  <a href="#editEmployeeModal" className="edit" data-toggle="modal"><i class="fa-solid fa-pen"></i></a>
-                  <a href="#deleteEmployeeModal" className="delete" data-toggle="modal"><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-
-              <tr>
-                <td>
-                  <span className="custom-checkbox">
-                    <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                    <label for="checkbox1"></label>
-                  </span>
-                </td>
-                <td>Edificio B</td>
-                <td>
-                  <a href="#editEmployeeModal" className="edit" data-toggle="modal"><i class="fa-solid fa-pen"></i></a>
-                  <a href="#deleteEmployeeModal" className="delete" data-toggle="modal"><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span className="custom-checkbox">
-                    <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                    <label for="checkbox1"></label>
-                  </span>
-                </td>
-                <td>Edificio C</td>
-                <td>
-                  <a href="#editEmployeeModal" className="edit" data-toggle="modal"><i class="fa-solid fa-pen"></i></a>
-                  <a href="#deleteEmployeeModal" className="delete" data-toggle="modal"><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span className="custom-checkbox">
-                    <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                    <label for="checkbox1"></label>
-                  </span>
-                </td>
-                <td>Edificio D</td>
-                <td>
-                  <a href="#editEmployeeModal" className="edit" data-toggle="modal"><i class="fa-solid fa-pen"></i></a>
-                  <a href="#deleteEmployeeModal" className="delete" data-toggle="modal"><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span className="custom-checkbox">
-                    <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                    <label for="checkbox1"></label>
-                  </span>
-                </td>
-                <td>Edificio E</td>
-                <td>
-                  <a href="#editEmployeeModal" className="edit" data-toggle="modal"><i class="fa-solid fa-pen"></i></a>
-                  <a href="#deleteEmployeeModal" className="delete" data-toggle="modal"><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span className="custom-checkbox">
-                    <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                    <label for="checkbox1"></label>
-                  </span>
-                </td>
-                <td>Edificio F</td>
-                <td>
-                  <a href="#editEmployeeModal" className="edit" data-toggle="modal"><i class="fa-solid fa-pen"></i></a>
-                  <a href="#deleteEmployeeModal" className="delete" data-toggle="modal"><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-
+              {
+                buildings ? buildings.map((building, index) => {
+                  return <BuildingRow key={index} building={building} />
+                })
+                  :
+                  <p>Aun no hay usuarios</p>
+              }
             </tbody>
 
           </table>
         </div>
       </div>
-    </section>  
+    </section>
   );
 }
 

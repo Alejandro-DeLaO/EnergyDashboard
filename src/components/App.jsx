@@ -24,9 +24,9 @@ import { AuthProvider } from "../context/AuthProvider";
 import RequiredAuth from "./RequireAuth";
 
 import AdministratorPage from "../pages/AdministratorPage/AdministratorPage";
+import AdministratorIndex from "../pages/AdministratorPage/components/AdministratorIndex";
 import DataManipulationPage from "../pages/AdministratorPage/DataManipulationPage/DataManipulationPage";
 
-import UploadDataPage from "../pages/AdministratorPage/UploadDataPage/UploadDataPage";
 import UploadFileComponent from "../pages/AdministratorPage/components/UploadFileComponent";
 import UploadDataIndexComponent from "../pages/AdministratorPage/components/UploadDataIndexComponent";
 
@@ -45,19 +45,6 @@ export default function App() {
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/signup" element={<SignUpPage />} />
                     <Route path="/test" element={<EnergyIndicatorV2 />} />
-
-
-                    {/* Rutas de la pagina aministrador */}
-                    <Route path="/crud_table/usuarios" element={<UsersTablePage />} />
-                    <Route path="/crud_table/edificios" element={<BuildingsTablePage />} />
-                    <Route path="/crud_table/consumo_energetico" element={<EnergyConsumptionPage />} />
-                    <Route path="/crud_table/energia_generada" element={<GeneratedEnergyPage />} />
-
-                    <Route path="/admin" element={<AdministratorPage />} />
-                    <Route path="/data_manipulation" element={<DataManipulationPage />} />
-
-
-
                     <Route path="/indicador/plantel" element={<EnergyIndicatorV4 />} />
                     <Route path="/indicador/plantel2" element={<EnergyIndicatorV5 />} />
 
@@ -66,10 +53,18 @@ export default function App() {
                     </Route>
 
                     <Route element={<RequiredAuth allowedRoles={['admin']} />}>
-                        <Route path="/administrador" element={<UploadDataPage />}>
-                            <Route index element={<UploadDataIndexComponent />} />
-                            <Route path="index" element={<UploadDataIndexComponent />} />
+                        <Route path="/administrador" element={<AdministratorPage />}>
+
+                            <Route index element={<AdministratorIndex />} />
+                            <Route path="subirDatos" element={<UploadDataIndexComponent />} />
                             <Route path="subirDatos/:type" element={<UploadFileComponent />} />
+
+                            <Route path="manipularDatos" element={<DataManipulationPage />} />
+                            <Route path="manipularDatos/usuarios" element={<UsersTablePage />} />
+                            <Route path="manipularDatos/edificios" element={<BuildingsTablePage />} />
+                            <Route path="manipularDatos/consumoEnergetico" element={<EnergyConsumptionPage />} />
+                            <Route path="manipularDatos/energiaGenerada" element={<GeneratedEnergyPage />} />
+
                         </Route>
                     </Route>
                 </Routes>

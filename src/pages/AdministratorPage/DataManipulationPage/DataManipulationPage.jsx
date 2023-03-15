@@ -8,10 +8,10 @@ export default function DataManipulationPage() {
             <p className="homepage-text mb-4" style={{ fontSize: "1rem" }}>Analiza, edita, elimina o crea nueva información para la página</p>
 
             <div className="row d-flex justify-content-center section-container gap-3 m-auto my-5">
-                <SectionComponent to='/administrador' img='/assets/lowBattery.png' text='Consumo de energia' elevation="-15%" marginL="" />
-                <SectionComponent to='/administrador' img='/assets/generatedEnergy.png' text='Energía generada' elevation="-25%" marginL="" />
-                <SectionComponent to='/administrador/subirDatos/energiaGenerada' img='/assets/buildings.png' text='Edificios' elevation="-20%" marginL="40px" />
-                <SectionComponent to='/administrador/subirDatos/' img='/assets/adminIcon_users.png' text='Usuarios' elevation="-30%" marginL="" />
+                <SectionComponent to='/administrador/manipularDatos/consumoEnergetico' img='/assets/lowBattery.png' text='Consumo de energia' elevation="-15%" marginL="" />
+                <SectionComponent to='/administrador/manipularDatos/energiaGenerada' img='/assets/generatedEnergy.png' text='Energía generada' elevation="-25%" marginL="" />
+                <SectionComponent to='/administrador/manipularDatos/edificios' img='/assets/buildings.png' text='Edificios' elevation="-20%" marginL="40px" />
+                <SectionComponent to='/administrador/manipularDatos/usuarios' img='/assets/adminIcon_users.png' text='Usuarios' elevation="-30%" marginL="" />
             </div>
         </section>
     );
