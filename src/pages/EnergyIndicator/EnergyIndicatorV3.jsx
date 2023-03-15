@@ -107,6 +107,7 @@ export default function EnergyIndicatorV3() {
               }}
         />    
     ) : null;
+    console.log(lastMonthGraph)
     
     const lastWeek = energyConsumptionsOfTheWeek[0] ? (
         <Line
@@ -152,10 +153,7 @@ export default function EnergyIndicatorV3() {
               }}
         />    
     ) : null;
-
-
-
-              
+       
     const lastDay = energyConsumptionsOfTheDay[0] ? (
         <Line
             data = {{

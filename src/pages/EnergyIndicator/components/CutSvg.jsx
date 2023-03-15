@@ -1,37 +1,51 @@
 import React from "react";
 import "./cut-svg.styles.css"
+import { Link } from "react-router-dom";
+import { scroll } from "../../../utils/scroll";
 
 export default function CutSvg(){
+    const handleClick = () => scroll();
     return (
         <section>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1227.000000 800.000000" id="map-svg" style={{backgroundColor:"black", maxHeight: "500px"}}>
             <g id ="waves">
-                <g id ="medicina">
-                    <path transform="translate(700,600) scale(0.25,0.2)" fillOpacity='0.5'/>
-                    <path transform="translate(700,600) scale(0.25,0.2)" fillOpacity='0.7'/>
-                    <path transform="translate(700,600) scale(0.25,0.2)" fillOpacity='0.9'/>
-                </g>
+                <Link to='/indicador/plantel2' onClick={handleClick}>
+                    <g id ="medicina">
+                        <rect path transform="translate(700,600) scale(0.25,0.2)" width="1330" height="500" fill="transparent"/>
+                        <path transform="translate(700,600) scale(0.25,0.2)" fillOpacity='0.5'/>
+                        <path transform="translate(700,600) scale(0.25,0.2)" fillOpacity='0.7'/>
+                        <path transform="translate(700,600) scale(0.25,0.2)" fillOpacity='0.9'/>
+                    </g>   
+                </Link >
 
-                <g id="energia">
-                    <path transform="translate(300,430) scale(0.1,0.4)" fillOpacity='0.5'/>
-                    <path transform="translate(300,430) scale(0.1,0.4)" fillOpacity='0.7'/>
-                    <path transform="translate(300,430) scale(0.1,0.4)" fillOpacity='0.9'/>
-                </g>
-                    
-                <g id="biblioteca">
-                    <path transform="translate(445,215) scale(0.1,0.4)" fillOpacity='0.5'/>
-                    <path transform="translate(445,215) scale(0.1,0.4)" fillOpacity='0.7'/>
-                    <path transform="translate(445,215) scale(0.1,0.4)" fillOpacity='0.9'/>
-                </g>
+                <Link to='/indicador/instituto-energias-renovables' onClick={handleClick}>
+                    <g id="energia">
+                        <rect transform="translate(300,430) scale(0.1,0.4)" width="1330" height="500" fill="transparent"/>
+                        <path transform="translate(300,430) scale(0.1,0.4)" fillOpacity='0.5'/>
+                        <path transform="translate(300,430) scale(0.1,0.4)" fillOpacity='0.7'/>
+                        <path transform="translate(300,430) scale(0.1,0.4)" fillOpacity='0.9'/>
+                    </g>
+                </Link>
 
-                <g id="atencion">
-                    <path transform="translate(180,445) scale(0.09,0.2)" fillOpacity='0.5'/>
-                    <path transform="translate(180,445) scale(0.09,0.2)" fillOpacity='0.7'/>
-                    <path transform="translate(180,445) scale(0.09,0.2)" fillOpacity='0.9'/>
-                </g>
+                <Link to='/indicador/biblioteca' onClick={handleClick}>
+                    <g id="biblioteca">
+                        <rect transform="translate(445,215) scale(0.1,0.4)" width="1330" height="500" fill="transparent"/>
+                        <path transform="translate(445,215) scale(0.1,0.4)" fillOpacity='0.5'/>
+                        <path transform="translate(445,215) scale(0.1,0.4)" fillOpacity='0.7'/>
+                        <path transform="translate(445,215) scale(0.1,0.4)" fillOpacity='0.9'/>
+                    </g>
+                </Link>
 
+                <Link to='/indicador/centro-atencion-estudiantes' onClick={handleClick}>
+                    <g id="atencion">
+                        <rect transform="translate(180,445) scale(0.09,0.2)" width="1330" height="500" fill="transparent"/>
+                        <path transform="translate(180,445) scale(0.09,0.2)" fillOpacity='0.5'/>
+                        <path transform="translate(180,445) scale(0.09,0.2)" fillOpacity='0.7'/>
+                        <path transform="translate(180,445) scale(0.09,0.2)" fillOpacity='0.9'/>
+                    </g>
+                </Link>
             </g>
-
+            
 
             <g transform="translate(0.000000,800.000000) scale(0.100000,-0.100000)" fill="white">
             <path d="M0 4000 l0 -4000 6135 0 6135 0 0 4000 0 4000 -6135 0 -6135 0 0
@@ -100,6 +114,14 @@ export default function CutSvg(){
             -83 69 7 c128 12 139 16 142 54 4 39 -26 238 -39 264 -11 19 -66 22 -110 6z"/>
             </g>
 
+            <g id="nombres">
+                <text x="448" y="400" style={{fontSize: "1.7rem", fontFamily:"Helvetica Neue", fontWeight: "bold"}}>Biblioteca</text>
+                <text x="210" y="560" style={{fontSize: "1.7rem", fontFamily:"Helvetica Neue", fontWeight: "bold"}}>CAE</text>
+                <text x="240" y="630" style={{fontSize: "1.7rem", fontFamily:"Helvetica Neue", fontWeight: "bold"}}>Instituto de energias</text>
+                <text x="285" y="660" style={{fontSize: "1.7rem", fontFamily:"Helvetica Neue", fontWeight: "bold"}}>Renovables</text>
+                <text x="775" y="600" style={{fontSize: "1.7rem", fontFamily:"Helvetica Neue", fontWeight: "bold"}}>Ciencias de la salud</text>
+            </g>
+            
             </svg>
         </section>
         
