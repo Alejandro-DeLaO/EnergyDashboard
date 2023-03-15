@@ -6,7 +6,6 @@ import LineChart from "../../components/LineChart";
 import BarChart from "../../components/BarChart";
 import CutSvg from "./components/CutSvg";
 import "./styles/cards-heights-v3.css"
-import * as photovoltaicGenerationService from '../../services/PhotovoltaicGeneration';
 import * as energyConsumptionService from '../../services/EnergyConsumption';
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
@@ -18,8 +17,6 @@ export default function EnergyIndicatorV3() {
 
     const { auth } = useAuth();
     const navigate = useNavigate();
-    const [photovoltaicGenerations, setPhotovoltaicGenerations] = useState([]);
-    const [energyConsumptions, setEnergyConsumptions] = useState([]);
 
     //Filtering by range of time.
     const [energyConsumptionsOfTheDay, setEnergyConsumptionsOfTheDay] = useState([]);
@@ -29,9 +26,6 @@ export default function EnergyIndicatorV3() {
     useEffect(() => {
         const getEnergyConsumptions = async () => {
             try {
-                const response = await energyConsumptionService.getEnergyConsumptions(auth.token, {building: '640a3ba618418225de453ef8'});
-                setEnergyConsumptions(response.data.data.energyConsumptions);
-
                 //Get filtering.
                 const perDay = await energyConsumptionService.getEnergyConsumptionsPerDay(auth.token, {building: '640a3ba618418225de453ef8', date: new Date('02/26/2023')});
                 setEnergyConsumptionsOfTheDay(perDay.data.data.energyConsumptionsOfThatDay);
