@@ -13,6 +13,8 @@ import EnergyIndicatorV3 from "../pages/EnergyIndicator/EnergyIndicatorV3";
 import EnergyIndicatorV4 from "../pages/EnergyIndicatorV4/EnergyIndicatorV4";
 import EnergyIndicatorV5 from "../pages/EnergyIndicatorV4/EnergyIndicatorV5";
 
+import CommentPage from "../pages/CommentPage/CommentsPage";
+
 //Tables
 import UsersTablePage from "../pages/CRUDTablePage/UsersTablePage";
 import BuildingsTablePage from "../pages/CRUDTablePage/buildingsTablePage";
@@ -47,6 +49,7 @@ export default function App() {
                     <Route path="/test" element={<EnergyIndicatorV2 />} />
                     <Route path="/indicador/plantel" element={<EnergyIndicatorV4 />} />
                     <Route path="/indicador/plantel2" element={<EnergyIndicatorV5 />} />
+                    <Route path="/comments" element={<CommentPage />} />
 
                     <Route element={<RequiredAuth allowedRoles={['admin']} />}>
                         <Route path="/dashboard" element={<DashboardPage />} />

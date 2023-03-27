@@ -4,7 +4,7 @@ import '../../styles/homepage.css';
 
 export default function HomePage() {
 
-    const randomNum = Math.floor(Math.random() * 2 + 1);
+    const randomNum = Math.floor(Math.random() * 3 + 1);
     const randomImg = "/assets/homepageImg" + randomNum + ".png";
 
     return (

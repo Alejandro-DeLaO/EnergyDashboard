@@ -28,7 +28,7 @@ function SideNavBarComponent() {
 
           {/* Dashboard text */}
           {/* collapse navbar-collapse */}
-          <div className="                        " id="navbarColor03">
+          <div className="" id="navbarColor03">
             <ul className="navbar-nav ms-auto">
               {
                 auth && auth.user && auth.user.role === 'admin' &&
