@@ -25,7 +25,7 @@ export default function AllCommentsSection() {
         comments.map(comment => (
           <div className="my-3 mx-auto py-4 p-3 rounded" style={{width: "90%", border: "1px solid black"}} key={comment._id}>
             <h4>{comment?.user?.name}</h4>
-            <p>{comment.content}</p>
+            <p className="m-0 mt-2">{comment.content}</p>
           </div>
         ))
       }
