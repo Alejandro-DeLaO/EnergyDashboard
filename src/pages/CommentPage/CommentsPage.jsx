@@ -1,12 +1,13 @@
 import React from 'react';
-import CreateCommentSection from './components/CreateCommentSection';
-import AllCommentsSection from './components/AllCommentsSection';
+import { CommentProvider } from '../../context/CommentContext';
+import CommentsSection from './components/CommentsSection';
 
 export default function CommentPage() {
   return(
-    <section>
-      <CreateCommentSection />
-      <AllCommentsSection />
-    </section>
+    <CommentProvider>
+      <section>
+        <CommentsSection />
+      </section>
+    </CommentProvider>
   );
 }

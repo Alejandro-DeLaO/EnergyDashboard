@@ -17,7 +17,7 @@ export default function InputComponent(props) {
         <div className={props.className}>
             <label htmlFor={props.name} className="form-label">{props.label}</label>
             <input disabled={props.disabled ? props.disabled : false} type={props.type ? props.type : "text"} id={props.name} className={!props.errors[props.name] ? "form-control-plaintext" : "form-control-plaintext is-invalid"} placeholder={props.placeholder}
-                {...(props.register(props.name, validatorsAndEvents))} style={{borderBottom: "1px solid", borderTop: "0",borderColor: "black"}}
+                {...(props.register(props.name, validatorsAndEvents))} style={{ borderBottom: "1px solid", borderTop: "0", borderColor: "black" }}
             />
             {props.errors[props.name] && props.errors[props.name].type === 'required' && <ShowError text={props.errors[props.name].message} />}
             {props.errors[props.name] && props.errors[props.name].type === 'pattern' && <ShowError text={props.errors[props.name].message} />}
