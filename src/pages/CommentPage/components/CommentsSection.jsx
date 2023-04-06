@@ -26,9 +26,21 @@ export default function CreateCommentSection() {
 
     try {
       await commentService.postComment(data);
+      Swal.fire({
+        title: "Comentario publicado",
+        icon: "success",
+        confirmButtonText: "Ok",
+        timer: 2000
+      });
       setCommentCount(commentCount + 1);
       console.log('Uploaded data: ', data)
     } catch (err) {
+      Swal.fire({
+        title: "Error al publicar comentario, intentalo de nuevo",
+        icon: "error",
+        confirmButtonText: "Ok",
+        timer: 2000
+      });
       console.log(err);
     }
   }

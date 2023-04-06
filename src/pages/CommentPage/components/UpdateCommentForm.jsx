@@ -3,6 +3,7 @@ import InputComponent from '../../../components/InputComponent';
 import CommentContext from '../../../context/CommentContext';
 
 import { useForm } from 'react-hook-form';
+import Swal from 'sweetalert2';
 import useAuth from "../../../hooks/useAuth";
 import * as commentService from '../../../services/CommentService'
 
@@ -18,9 +19,21 @@ export function UpdateCommentForm() {
 
     try{
       await commentService.updateComment(comm, data);
+      Swal.fire({
+        title: 'Comentario actualizado con éxito',
+        icon: 'success',
+        confirmButtonText: "Ok",
+        timer: 2000
+      });
       setCommentCount(commentCount + 1);
       console.log(data);
     } catch(error) {
+      Swal.fire({
+        title: 'Error al actualizar comentario, intentalo de nuevo',
+        icon: 'error',
+        confirmButtonText: "Ok",
+        timer: 2000
+      });
       console.log(error);
     }
   }
