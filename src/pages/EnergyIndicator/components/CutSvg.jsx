@@ -9,16 +9,16 @@ export default function CutSvg(){
         <section>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1227.000000 800.000000" id="map-svg" style={{backgroundColor:"black", maxHeight: "500px"}}>
             <g id ="waves">
-                <Link to='/indicador/plantel2' onClick={handleClick}>
+                <Link to='/indicador/Salud' onClick={handleClick}>
                     <g id ="medicina">
-                        <rect path transform="translate(700,600) scale(0.25,0.2)" width="1330" height="500" fill="transparent"/>
+                        <rect transform="translate(700,600) scale(0.25,0.2)" width="1330" height="500" fill="transparent"/>
                         <path transform="translate(700,600) scale(0.25,0.2)" fillOpacity='0.5'/>
                         <path transform="translate(700,600) scale(0.25,0.2)" fillOpacity='0.7'/>
                         <path transform="translate(700,600) scale(0.25,0.2)" fillOpacity='0.9'/>
                     </g>   
                 </Link >
 
-                <Link to='/indicador/instituto-energias-renovables' onClick={handleClick}>
+                <Link to='/indicador/IER' onClick={handleClick}>
                     <g id="energia">
                         <rect transform="translate(300,430) scale(0.1,0.4)" width="1330" height="500" fill="transparent"/>
                         <path transform="translate(300,430) scale(0.1,0.4)" fillOpacity='0.5'/>
@@ -27,7 +27,7 @@ export default function CutSvg(){
                     </g>
                 </Link>
 
-                <Link to='/indicador/biblioteca' onClick={handleClick}>
+                <Link to='/indicador/Biblioteca' onClick={handleClick}>
                     <g id="biblioteca">
                         <rect transform="translate(445,215) scale(0.1,0.4)" width="1330" height="500" fill="transparent"/>
                         <path transform="translate(445,215) scale(0.1,0.4)" fillOpacity='0.5'/>
@@ -36,7 +36,7 @@ export default function CutSvg(){
                     </g>
                 </Link>
 
-                <Link to='/indicador/centro-atencion-estudiantes' onClick={handleClick}>
+                <Link to='/indicador/CAE' onClick={handleClick}>
                     <g id="atencion">
                         <rect transform="translate(180,445) scale(0.09,0.2)" width="1330" height="500" fill="transparent"/>
                         <path transform="translate(180,445) scale(0.09,0.2)" fillOpacity='0.5'/>

@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 // import NavBarComponent from "./NavBarComponent";
 import SideNavBarComponent from "./SideNavBarComponent";
+import NotFoundPage from "../pages/NotFoundPage";
 import HomePage from "../pages/HomePage/HomePage";
 import EnergyIndicator from "../pages/EnergyIndicator/EnergyIndicator";
 import LoginPage from "../pages/LoginPage/LoginPage";
@@ -43,12 +44,9 @@ export default function App() {
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/indicador/:section" element={<EnergyIndicator />} />
-                    <Route path="/indicador/biblioteca" element={<EnergyIndicatorV3 />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/signup" element={<SignUpPage />} />
                     <Route path="/test" element={<EnergyIndicatorV2 />} />
-                    <Route path="/indicador/plantel" element={<EnergyIndicatorV4 />} />
-                    <Route path="/indicador/plantel2" element={<EnergyIndicatorV5 />} />
                     <Route path="/comments" element={<CommentPage />} />
 
                     <Route element={<RequiredAuth allowedRoles={['admin']} />}>
@@ -70,6 +68,9 @@ export default function App() {
 
                         </Route>
                     </Route>
+
+                    <Route path="*" element={<NotFoundPage />} />
+
                 </Routes>
 
                 <FooterComponent />
