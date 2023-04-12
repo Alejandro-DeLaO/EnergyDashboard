@@ -70,12 +70,12 @@ export default function CreateCommentSection() {
         commentService.deleteComment(id);
         setCommentCount(commentCount + 1);
         Swal.fire({
-          title: 'El producto fue eliminado con exito',
+          title: 'El comentario fue eliminado con exito',
           icon: 'info'
         });
       } else {
         Swal.fire({
-          title: 'El producto no fue eliminado',
+          title: 'El comentario no fue eliminado',
           icon: 'info'
         });
       }
@@ -155,9 +155,13 @@ export default function CreateCommentSection() {
                   <>
                     <div className='d-flex justify-content-end mt-3'>
                       {/* Edit button */}
-                      <button onClick={() => getComment(comment._id)} className='btn btn-warning me-1' data-bs-toggle="modal" data-bs-target="#editComment" style={{ fontSize: ".9rem" }}><i className="fa-regular fa-pen-to-square"></i></button>
+                      <button onClick={() => getComment(comment._id)} className='btn btn-warning me-1' data-bs-toggle="modal" data-bs-target="#editComment" style={{ fontSize: ".9rem" }}>
+                        <i className="fa-regular fa-pen-to-square"></i>
+                      </button>
                       {/* Delete button */}
-                      <button onClick={() => deleteComment(comment._id)} className='btn btn-danger ms-1' style={{ fontSize: ".9rem" }}><i className="fa-solid fa-trash"></i></button>
+                      <button onClick={() => deleteComment(comment._id)} className='btn btn-danger ms-1' style={{ fontSize: ".9rem" }}>
+                        <i className="fa-solid fa-trash"></i>
+                      </button>
                     </div>
                   </>
                 }

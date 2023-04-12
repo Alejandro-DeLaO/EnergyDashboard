@@ -13,8 +13,8 @@ export function postUser(user, token){
     return axios.post(`${BACKEND_URL}users`, user, {headers: {authorization: `Bearer ${token}`}});
 }
 
-export function updateUser(user, token){
-    return axios.patch(`${BACKEND_URL}users/${user.id}`, user, {headers: {authorization: `Bearer ${token}`}});
+export function updateUser(id, data, token){
+    return axios.patch(`${BACKEND_URL}users/${id}`, data, {headers: {authorization: `Bearer ${token}`}});
 }
 
 export function deleteUser(id, token){

@@ -5,30 +5,6 @@ import ReactPaginate from 'react-paginate';
 import * as energyConsumptionService from '../../services/EnergyConsumption';
 import Swal from "sweetalert2";
 
-function EnergyConsumptionRow(props) {
-  return (
-    <tr>
-      {
-        props.energyConsumption &&
-        <>
-          <td>{new Date(props.energyConsumption.createdAt).toLocaleString('es-MX')}</td>
-          <td>{props.energyConsumption.kwhr}</td>
-          <td>{props.energyConsumption.wr}</td>
-          <td>{props.energyConsumption.building.name}</td>
-          <td>
-            <a className="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#user-detail">
-              <i className="fa-solid fa-pen"></i>
-            </a>
-            <a className="btn btn-danger mx-2">
-              <i className="fa-solid fa-trash"></i>
-            </a>
-          </td>
-        </>
-      }
-    </tr>
-  );
-}
-
 function EnergyConsumptionPage() {
 
   const { auth, expiredToken } = useAuth();
@@ -38,6 +14,32 @@ function EnergyConsumptionPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalEnergyConsumptionsFound, setTotalEnergyConsumptionsFound] = useState(12);
   const [energyConsumptions, setEnergyConsumptions] = useState();
+  const [count, setCount] = useState(0);
+
+  //Delete energy consumption register
+  const deleteEnergyConsumption = (id) => {
+    Swal.fire({
+      title: '¿Estás seguro de eliminar el comentario?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Si, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if(result.isConfirmed) {
+        energyConsumptionService.deleteEnergyConsumption(id, auth.token);
+        setCount(count + 1);
+        Swal.fire({
+          title: 'El producto fue eliminado con exito',
+          icon: 'info'
+        });
+      } else {
+        Swal.fire({
+          title: 'El producto no fue eliminado',
+          icon: 'info'
+        });
+      }
+    });
+  };
 
   useEffect(() => {
     const getEnergyConsumptions = async () => {
@@ -96,8 +98,8 @@ function EnergyConsumptionPage() {
                 <h2>Administrar <b>energia consumida</b></h2>
               </div>
               <div className="col-sm-6 d-flex m-auto justify-content-end">
-                <a href="/" className="btn btn-success me-1" data-toggle="modal"><i className="fa-solid fa-plus"></i> <span>Añadir registro</span></a>
-                <a href="/" className="btn btn-danger ms-1" data-toggle="modal"><i className="fa-solid fa-trash"></i> <span>Eliminar</span></a>
+                <a href="/administrador/subirDatos/energiaConsumida" className="btn btn-success me-1" data-toggle="modal"><i className="fa-solid fa-plus"></i> <span>Añadir registro</span></a>
+                {/* <a href="/" className="btn btn-danger ms-1" data-toggle="modal"><i className="fa-solid fa-trash"></i> <span>Eliminar</span></a> */}
               </div>
             </div>
           </div>
@@ -116,9 +118,26 @@ function EnergyConsumptionPage() {
 
             <tbody>
               {
-                energyConsumptions ? energyConsumptions.map((energyConsumption, index) => {
-                  return <EnergyConsumptionRow key={index} energyConsumption={energyConsumption} />
-                })
+                energyConsumptions ? energyConsumptions.map((energyConsumption) => {
+                  // return <EnergyConsumptionRow key={index} energyConsumption={energyConsumption} />
+                  return(   
+                  <tr key={energyConsumption._id}>
+                    {
+                      energyConsumption &&
+                      <>
+                        <td>{new Date(energyConsumption.createdAt).toLocaleString('es-MX')}</td>
+                        <td>{energyConsumption.kwhr}</td>
+                        <td>{energyConsumption.wr}</td>
+                        <td>{energyConsumption.building.name}</td>
+                        <td>
+                          <button onClick={() => deleteEnergyConsumption(energyConsumption._id)} className="btn btn-danger mx-2">
+                            <i className="fa-solid fa-trash"></i>
+                          </button>
+                        </td>
+                      </>
+                    }
+                  </tr>
+                )})
                   :
                   <tr>
                     <td>Aun no consumos energeticos que mostrar</td>

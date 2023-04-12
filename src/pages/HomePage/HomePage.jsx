@@ -38,7 +38,7 @@ export default function HomePage() {
                 <SectionComponent to='/indicador/Salud' img='/assets/linkImg4.png' text='Ciencias de la salud' elevation="-20%" />
                 {/* <SectionComponent to='/test' img='/assets/linkImg5.png' text='Monitoreo' elevation="-20%" /> */}
                 {
-                    auth?.user && <SectionComponent to='/administrador' img='/assets/user.png' text='Administrador' elevation="-20%" marginL="25px" />
+                    auth?.user?.role === 'admin' && <SectionComponent to='/administrador' img='/assets/user.png' text='Administrador' elevation="-20%" marginL="25px" />
                 }
             </div>
         </section>

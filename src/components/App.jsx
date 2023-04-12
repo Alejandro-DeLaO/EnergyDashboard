@@ -10,15 +10,15 @@ import SignUpPage from "../pages/SignUpPage/SignUpPage";
 import DashboardPage from "../pages/DashboardPage";
 import FooterComponent from "./FooterComponent";
 import EnergyIndicatorV2 from "../pages/EnergyIndicator/EnergyIndicatorV2";
-import EnergyIndicatorV3 from "../pages/EnergyIndicator/EnergyIndicatorV3";
-import EnergyIndicatorV4 from "../pages/EnergyIndicatorV4/EnergyIndicatorV4";
-import EnergyIndicatorV5 from "../pages/EnergyIndicatorV4/EnergyIndicatorV5";
+// import EnergyIndicatorV3 from "../pages/EnergyIndicator/EnergyIndicatorV3";
+// import EnergyIndicatorV4 from "../pages/EnergyIndicatorV4/EnergyIndicatorV4";
+// import EnergyIndicatorV5 from "../pages/EnergyIndicatorV4/EnergyIndicatorV5";
 
 import CommentPage from "../pages/CommentPage/CommentsPage";
 
 //Tables
-import UsersTablePage from "../pages/CRUDTablePage/UsersTablePage";
-import BuildingsTablePage from "../pages/CRUDTablePage/buildingsTablePage";
+import UsersTablePage from "../pages/CRUDTablePage/UsersTable/UsersTablePage";
+import BuildingsTablePage from "../pages/CRUDTablePage/BuildingsTable/BuildingsTablePage";
 import EnergyConsumptionPage from "../pages/CRUDTablePage/EnergyConsumptionPage";
 import GeneratedEnergyPage from "../pages/CRUDTablePage/GeneratedEnergyPage";
 

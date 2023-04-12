@@ -39,6 +39,7 @@ export function UpdateCommentForm() {
   }
   
   return(
+    //Modal
     <div className="modal fade" id="editComment" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div className="modal-dialog modal-lg">
         <div className="modal-content">

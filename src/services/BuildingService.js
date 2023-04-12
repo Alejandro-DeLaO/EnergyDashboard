@@ -9,12 +9,12 @@ export function getBuilding(id, token){
     return axios.get(`${BACKEND_URL}buildings/${id}`, {headers: {authorization: `Bearer ${token}`}});
 }
 
-export function postBuilding(building, token){
-    return axios.post(`${BACKEND_URL}buildings`, building, {headers: {authorization: `Bearer ${token}`}});
+export function postBuilding(data, token){
+    return axios.post(`${BACKEND_URL}buildings`, data, {headers: {authorization: `Bearer ${token}`}});
 }
 
-export function updateBuilding(building, token){
-    return axios.patch(`${BACKEND_URL}buildings/${building._id}`, building, {headers: {authorization: `Bearer ${token}`}});
+export function updateBuilding(id, data, token){
+    return axios.patch(`${BACKEND_URL}buildings/${id}`, data, {headers: {authorization: `Bearer ${token}`}});
 }
 
 export function deleteBuilding(id, token){

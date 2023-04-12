@@ -5,30 +5,6 @@ import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import * as photovoltaicGenerationsService from '../../services/PhotovoltaicGeneration';
 
-function PhotovoltaicGenerationRow(props) {
-  return (
-    <tr>
-      {
-        props.photovoltaicGeneration &&
-        <>
-          <td>{new Date(props.photovoltaicGeneration.createdAt).toLocaleString('es-MX')}</td>
-          <td>{props.photovoltaicGeneration.kwhr}</td>
-          <td>{props.photovoltaicGeneration.wr}</td>
-          <td>{props.photovoltaicGeneration.building.name}</td>
-          <td>
-            <a className="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#user-detail">
-              <i className="fa-solid fa-pen"></i>
-            </a>
-            <a className="btn btn-danger mx-2">
-              <i className="fa-solid fa-trash"></i>
-            </a>
-          </td>
-        </>
-      }
-    </tr>
-  );
-}
-
 function GeneratedEnergyPage() {
 
   const { auth, expiredToken } = useAuth();
@@ -38,6 +14,33 @@ function GeneratedEnergyPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPhotovoltaicGenerationsFound, setTotalEnergyConsumptionsFound] = useState(12);
   const [photovoltaicGenerations, setPhotovoltaicGenerations] = useState();
+  const [count, setCount] = useState(1);
+ 
+  //Delete photovoltaic generation register
+  const deletePhotovoltaicGeneration = (id) => {
+    Swal.fire({
+      title: '¿Estás seguro de eliminar el comentario?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Si, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if(result.isConfirmed) {
+        photovoltaicGenerationsService.deletePhotovoltaicGeneration(id, auth.token);
+        setCount(count + 1);
+        Swal.fire({
+          title: 'El producto fue eliminado con exito',
+          icon: 'info'
+        });
+      } else {
+        Swal.fire({
+          title: 'El producto no fue eliminado',
+          icon: 'info'
+        });
+      }
+    });
+    console.log(count);
+  }
 
   useEffect(() => {
     const getEnergyConsumptions = async () => {
@@ -97,7 +100,6 @@ function GeneratedEnergyPage() {
               </div>
               <div className="col-sm-6 d-flex m-auto justify-content-end">
                 <a href="/" className="btn btn-success me-1" data-toggle="modal"><i className="fa-solid fa-plus"></i> <span>Añadir registro</span></a>
-                <a href="/" className="btn btn-danger ms-1" data-toggle="modal"><i className="fa-solid fa-trash"></i> <span>Eliminar</span></a>
               </div>
             </div>
           </div>
@@ -116,9 +118,26 @@ function GeneratedEnergyPage() {
 
             <tbody>
               {
-                photovoltaicGenerations ? photovoltaicGenerations.map((photovoltaicGeneration, index) => {
-                  return <PhotovoltaicGenerationRow key={index} photovoltaicGeneration={photovoltaicGeneration} />
-                })
+                photovoltaicGenerations ? photovoltaicGenerations.map((photovoltaicGeneration) => {
+                  // return <PhotovoltaicGenerationRow key={index} photovoltaicGeneration={photovoltaicGeneration} />
+                  return(
+                  <tr key={photovoltaicGeneration._id}>
+                  {
+                    photovoltaicGeneration &&
+                    <>
+                      <td>{new Date(photovoltaicGeneration.createdAt).toLocaleString('es-MX')}</td>
+                      <td>{photovoltaicGeneration.kwhr}</td>
+                      <td>{photovoltaicGeneration.wr}</td>
+                      <td>{photovoltaicGeneration.building.name}</td>
+                      <td>
+                        <button onClick={() => deletePhotovoltaicGeneration(photovoltaicGeneration._id)} className="btn btn-danger mx-2">
+                          <i className="fa-solid fa-trash"></i>
+                        </button>
+                      </td>
+                    </>
+                  }
+                </tr>
+                )})
                   :
                   <tr>
                     <td>Aun no consumos energeticos que mostrar</td>
