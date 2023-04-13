@@ -3,7 +3,8 @@ import Swal from "sweetalert2";
 
 import InputComponent from "../../../components/InputComponent";
 import CommentContext from "../../../context/CommentContext";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams, useNavigate, useLocation } from "react-router-dom";
+import ReactPaginate from "react-paginate";
 
 import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
@@ -14,9 +15,16 @@ import * as commentService from "../../../services/CommentService";
 export default function CreateCommentSection() {
 
   // Post comment
-  const { auth } = useAuth();
+  const { auth, expiredToken } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
   const { register, formState: { errors }, handleSubmit } = useForm();
-  const { commentCount, setCommentCount } = useContext(CommentContext);
+  const { commentCount, setCommentCount, setComm } = useContext(CommentContext);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams] = useSearchParams();
+  const [totalComments, setTotalComments] = useState(10);
+  const [comments, setComments] = useState([]);
+
 
   const onSubmit = async (data, e) => {
     e.target.reset();
@@ -46,8 +54,6 @@ export default function CreateCommentSection() {
   }
 
   // Update comment
-  const { setComm } = useContext(CommentContext);
-
   const getComment = async (comment) => {
     try{
       await setComm(comment);
@@ -83,20 +89,50 @@ export default function CreateCommentSection() {
   };
 
   // Show all comments
-  const [comments, setComments] = useState([]);
-
   useEffect(() => {
     const getComments = async () => {
+      let params = {
+        page: currentPage
+      };
+      for (const entry of searchParams.entries()){
+        const [param, value] = entry;
+        params[param] = value;
+      }
       try {
-        const result = await commentService.getComments();
-        setComments(result.data.data.comments);
-        console.log(result.data.data.comments);
-      } catch(err) {
-        console.log(err);
+        const commentsResponse = await commentService.getComments(params);
+        const commentsFromResponse = commentsResponse.data.data.comments;
+        const totalCommentsFromResponse = commentsResponse.data.results;
+
+        //Validate pagination
+        if ((commentsFromResponse.length === 0 && totalCommentsFromResponse !== 0) || params.page === '031') {
+          handlePageChange({ selected: 0 });
+          return;
+        }
+
+        setComments(commentsFromResponse);
+        setTotalComments(totalCommentsFromResponse);
+      } catch(error) {
+        if (error.response && error.response.data.status === 401) {
+          expiredToken();
+          navigate('/login');
+        } else if (error.response && error.response.data.status === 400) Swal.fire('Error', error.response.data.error, 'error');
+        else Swal.fire('Error', 'Algo ha salido mal, intenta de nuevo.' + error, 'error');
       }
     }
     getComments();
-  }, [commentCount]);
+  }, [location, commentCount]);
+
+  const handlePageChange = (data) => {
+    setCurrentPage(data.selected + 1);
+
+    navigate({
+      pathname: '/comments',
+      search: location.search !== '' ? location.search.replace(/page=\d+/, `page=${data.selected + 1}`) : `page=${data.selected + 1}`
+      //`${location.search !== '' ? location.search + '&' : `page=${data.selected+1}`}`
+    });
+
+    window.scrollTo(0, 0);
+  };
 
   return (
       <section className="container justify-content-center">
@@ -171,6 +207,26 @@ export default function CreateCommentSection() {
         </div>
         {/* Modal */}
         <UpdateCommentForm />
+
+        <ReactPaginate 
+          previousLabel={<i className="fa-solid fa-left-long"></i>}
+          nextLabel={<i className="fa-solid fa-arrow-right-long"></i>}
+          breakLabel='...'
+          pageCount={Math.ceil(totalComments / 10)}
+          marginPagesDisplayed='1'
+          pageRangeDisplayed='3'
+          onPageChange={handlePageChange}
+          containerClassName='pagination justify-content-center'
+          pageClassName='page-item'
+          pageLinkClassName="page-link"
+          previousLinkClassName="page-link"
+          previousClassName="page-item"
+          nextLinkClassName="page-link"
+          nextClassName="page-item"
+          breakLinkClassName="page-link"
+          breakClassName="page-item"
+          activeClassName="active"
+        />
       </section>
   );
 }

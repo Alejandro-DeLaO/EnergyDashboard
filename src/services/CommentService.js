@@ -5,8 +5,8 @@ export function postComment(data) {
   return axios.post(`${BACKEND_URL}comments`, data);
 }
 
-export function getComments() {
-  return axios.get(`${BACKEND_URL}comments`);
+export function getComments(parameters) {
+  return axios.get(`${BACKEND_URL}comments`, { params: parameters });
 }
 
 export function getComment(id) {
