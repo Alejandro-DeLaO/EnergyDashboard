@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import CutSvg from "./components/CutSvg";
 import * as energyConsumptionService from '../../services/EnergyConsumption';
 import * as buildingService from '../../services/BuildingService';
+import 'chartjs-adapter-date-fns';
 
 export default function EnergyIndicator() {
 
