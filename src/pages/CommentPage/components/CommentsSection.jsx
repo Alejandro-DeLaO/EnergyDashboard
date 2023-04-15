@@ -55,10 +55,10 @@ export default function CreateCommentSection() {
 
   // Update comment
   const getComment = async (comment) => {
-    try{
+    try {
       await setComm(comment);
       console.log(comment);
-    }catch(error) {
+    } catch (error) {
       console.log(error);
     }
   }
@@ -72,7 +72,7 @@ export default function CreateCommentSection() {
       confirmButtonText: 'Si, eliminar',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
-      if(result.isConfirmed) {
+      if (result.isConfirmed) {
         commentService.deleteComment(id);
         setCommentCount(commentCount + 1);
         Swal.fire({
@@ -94,7 +94,7 @@ export default function CreateCommentSection() {
       let params = {
         page: currentPage
       };
-      for (const entry of searchParams.entries()){
+      for (const entry of searchParams.entries()) {
         const [param, value] = entry;
         params[param] = value;
       }
@@ -111,7 +111,7 @@ export default function CreateCommentSection() {
 
         setComments(commentsFromResponse);
         setTotalComments(totalCommentsFromResponse);
-      } catch(error) {
+      } catch (error) {
         if (error.response && error.response.data.status === 401) {
           expiredToken();
           navigate('/login');
@@ -135,99 +135,99 @@ export default function CreateCommentSection() {
   };
 
   return (
-      <section className="container justify-content-center">
-        <div className="my-3 py-4 mx-auto" style={{ width: "90%", borderRadius: "15px", border: "2px #606470 solid" }}>
-          <div className="rounded mx-auto" style={{ width: "90%" }}>
-            <div className="d-flex">
-              <i className="fa-solid fa-user icon py-2 p-3 text-dark rounded" style={{ fontSize: "1.5rem" }} data-bs-toggle="dropdown" data-bs-display="static" />
-              <h4 className="mb-0 mt-auto ms-1">{auth?.user?.name}</h4>
-            </div>
-            {
-              !auth?.user &&
-              <>
-                <p className="text-center my-3 mx-0" style={{ fontSize: "1.2rem" }}>Inicia sesión para añadir un comentario.</p>
-                <div className="d-flex justify-content-center">
-                  <Link to='/login' className="btn btn-info my-2" style={{ width: "25%" }}>Iniciar sesión</Link>
-                </div>
-              </>
-            }
+    <section className="container justify-content-center">
+      <div className="my-3 py-4 mx-auto" style={{ width: "90%", borderRadius: "15px", border: "2px #606470 solid" }}>
+        <div className="rounded mx-auto" style={{ width: "90%" }}>
+          <div className="d-flex">
+            <i className="fa-solid fa-user icon py-2 p-3 text-dark rounded" style={{ fontSize: "1.5rem" }} data-bs-toggle="dropdown" data-bs-display="static" />
+            <h4 className="mb-0 mt-auto ms-1">{auth?.user?.name}</h4>
           </div>
-
-          {/* Create comment */}
           {
-            auth?.user &&
+            !auth?.user &&
             <>
-              <div className="mx-auto my-4 rounded" style={{ width: "90%" }}>
-                <p className="text-center" style={{ fontSize: "1.2rem" }}>Deja un comentario acerca de la página, recuerda que los comentarios son públicos y que incluyen tú nombre.</p>
-              </div>
-              <div className="mx-auto mb-2 rounded" style={{ width: "90%" }}>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <InputComponent name="content" label="Comentar" placeholder="Escribe un comentario" register={register} errors={errors} required={true} className="mb-3" />
-                  <button type="submit" className="btn btn-info" style={{ width: "15%" }}>Publicar</button>
-                </form>
+              <p className="text-center my-3 mx-0" style={{ fontSize: "1.2rem" }}>Inicia sesión para añadir un comentario.</p>
+              <div className="d-flex justify-content-center">
+                <Link to='/login' className="btn btn-info my-2" style={{ width: "25%" }}>Iniciar sesión</Link>
               </div>
             </>
           }
         </div>
 
-        {/* Show all comments */}
-        <div className="container">
-          {comments.length === 0 && <p style={{ width: "90%" }}>No hay comentarios para mostrar</p>}
+        {/* Create comment */}
+        {
+          auth?.user &&
+          <>
+            <div className="mx-auto my-4 rounded" style={{ width: "90%" }}>
+              <p className="text-center" style={{ fontSize: "1.2rem" }}>Deja un comentario acerca de la página, recuerda que los comentarios son públicos y que incluyen tú nombre.</p>
+            </div>
+            <div className="mx-auto mb-2 rounded" style={{ width: "90%" }}>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <InputComponent name="content" label="Comentar" placeholder="Escribe un comentario" register={register} errors={errors} required={true} className="mb-3" />
+                <button type="submit" className="btn btn-info" style={{ width: "15%" }}>Publicar</button>
+              </form>
+            </div>
+          </>
+        }
+      </div>
 
-          <div className="container mt-5" style={{ width: "90%", fontSize: "2rem" }}>
-            <p>Comentarios: <span>{comments.length}</span></p>
-          </div>
+      {/* Show all comments */}
+      <div className="container">
+        {comments.length === 0 && <p style={{ width: "90%" }}>No hay comentarios para mostrar</p>}
 
-          {
-            comments.map(comment => (
-              <div className="my-3 mx-auto py-4 p-3 rounded" style={{ width: "90%", border: "1px solid black" }} key={comment._id}>
-                <div className="d-flex">
-                  <i className="fa-solid fa-user icon py-2 p-3 text-dark rounded" style={{ fontSize: "1.1rem" }} data-bs-toggle="dropdown" data-bs-display="static" />
-                  <h4 className="mb-0 mt-auto ms-1">{comment?.user?.name}</h4>
-                </div>
-                <p className="ms-5 px-4 mt-2">{comment.content}</p>
-                {
-                  auth?.user && auth?.user?.name === comment?.user?.name &&
-                  <>
-                    <div className='d-flex justify-content-end mt-3'>
-                      {/* Edit button */}
-                      <button onClick={() => getComment(comment._id)} className='btn btn-warning me-1' data-bs-toggle="modal" data-bs-target="#editComment" style={{ fontSize: ".9rem" }}>
-                        <i className="fa-regular fa-pen-to-square"></i>
-                      </button>
-                      {/* Delete button */}
-                      <button onClick={() => deleteComment(comment._id)} className='btn btn-danger ms-1' style={{ fontSize: ".9rem" }}>
-                        <i className="fa-solid fa-trash"></i>
-                      </button>
-                    </div>
-                  </>
-                }
-              </div>
-            )).reverse()
-          }
+        <div className="container mt-5" style={{ width: "90%", fontSize: "2rem" }}>
+          <p>Comentarios: <span>{comments.length}</span></p>
         </div>
-        {/* Modal */}
-        <UpdateCommentForm />
 
-        <ReactPaginate 
-          previousLabel={<i className="fa-solid fa-left-long"></i>}
-          nextLabel={<i className="fa-solid fa-arrow-right-long"></i>}
-          breakLabel='...'
-          pageCount={Math.ceil(totalComments / 10)}
-          marginPagesDisplayed='1'
-          pageRangeDisplayed='3'
-          onPageChange={handlePageChange}
-          containerClassName='pagination justify-content-center'
-          pageClassName='page-item'
-          pageLinkClassName="page-link"
-          previousLinkClassName="page-link"
-          previousClassName="page-item"
-          nextLinkClassName="page-link"
-          nextClassName="page-item"
-          breakLinkClassName="page-link"
-          breakClassName="page-item"
-          activeClassName="active"
-        />
-      </section>
+        {
+          comments.map(comment => (
+            <div className="my-3 mx-auto py-4 p-3 rounded" style={{ width: "90%", border: "1px solid black" }} key={comment._id}>
+              <div className="d-flex">
+                <i className="fa-solid fa-user icon py-2 p-3 text-dark rounded" style={{ fontSize: "1.1rem" }} data-bs-toggle="dropdown" data-bs-display="static" />
+                <h4 className="mb-0 mt-auto ms-1">{comment?.user?.name}</h4>
+              </div>
+              <p className="ms-5 px-4 mt-2">{comment.content}</p>
+              {
+                auth?.user && auth?.user?.name === comment?.user?.name &&
+                <>
+                  <div className='d-flex justify-content-end mt-3'>
+                    {/* Edit button */}
+                    <button onClick={() => getComment(comment._id)} className='btn btn-warning me-1' data-bs-toggle="modal" data-bs-target="#editComment" style={{ fontSize: ".9rem" }}>
+                      <i className="fa-regular fa-pen-to-square"></i>
+                    </button>
+                    {/* Delete button */}
+                    <button onClick={() => deleteComment(comment._id)} className='btn btn-danger ms-1' style={{ fontSize: ".9rem" }}>
+                      <i className="fa-solid fa-trash"></i>
+                    </button>
+                  </div>
+                </>
+              }
+            </div>
+          )).reverse()
+        }
+      </div>
+      {/* Modal */}
+      <UpdateCommentForm />
+
+      <ReactPaginate
+        previousLabel={<i className="fa-solid fa-left-long"></i>}
+        nextLabel={<i className="fa-solid fa-arrow-right-long"></i>}
+        breakLabel='...'
+        pageCount={Math.ceil(totalComments / 12)}
+        marginPagesDisplayed='1'
+        pageRangeDisplayed='3'
+        onPageChange={handlePageChange}
+        containerClassName='pagination justify-content-center'
+        pageClassName='page-item'
+        pageLinkClassName="page-link"
+        previousLinkClassName="page-link"
+        previousClassName="page-item"
+        nextLinkClassName="page-link"
+        nextClassName="page-item"
+        breakLinkClassName="page-link"
+        breakClassName="page-item"
+        activeClassName="active"
+      />
+    </section>
   );
 }
 
