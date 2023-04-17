@@ -72,6 +72,9 @@ export default function EnergyIndicator() {
                     const lastDayOfLastMonthData = lastDayOfLastMonthResponse.data.data.energyConsumptionsOfThatDay;
                     //And save last index of that array, if has information.
                     setLastMonthTotalConsumptions(prevValue => {
+                        //Validate just 4 buildings, if length is 4, then restart buildings.
+                        if(prevValue?.buildingsData?.length === 4) prevValue = undefined;
+
                         //Save buildings data.
                         const buildingsData = prevValue?.buildingsData?.length > 0
                             ? [...prevValue.buildingsData, { building, data: lastDayOfLastMonthData.length > 0 ? lastDayOfLastMonthData[lastDayOfLastMonthData.length - 1].kwhr : 0 }]
