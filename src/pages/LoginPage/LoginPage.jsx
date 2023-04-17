@@ -4,7 +4,7 @@ import "../../styles/loginAndSignup.css";
 
 export default function LoginPage() {
     return (
-        <div className="page-container my-5" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "auto" }}>
+        <div className="page-container my-5 container-xxl" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "auto" }}>
             <div style={{ width: "100%" }}>
                 <LoginForm />
             </div>

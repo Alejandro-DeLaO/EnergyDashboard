@@ -10,11 +10,11 @@ import SignUpPage from "../pages/SignUpPage/SignUpPage";
 import DashboardPage from "../pages/DashboardPage";
 import FooterComponent from "./FooterComponent";
 import EnergyIndicatorV2 from "../pages/EnergyIndicator/EnergyIndicatorV2";
+import CommentPage from "../pages/CommentPage/CommentsPage";
+import ProfilePage from "../pages/ProfilePage/ProfilePage";
 // import EnergyIndicatorV3 from "../pages/EnergyIndicator/EnergyIndicatorV3";
 // import EnergyIndicatorV4 from "../pages/EnergyIndicatorV4/EnergyIndicatorV4";
 // import EnergyIndicatorV5 from "../pages/EnergyIndicatorV4/EnergyIndicatorV5";
-
-import CommentPage from "../pages/CommentPage/CommentsPage";
 
 //Tables
 import UsersTablePage from "../pages/CRUDTablePage/UsersTable/UsersTablePage";
@@ -47,7 +47,8 @@ export default function App() {
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/signup" element={<SignUpPage />} />
                     <Route path="/test" element={<EnergyIndicatorV2 />} />
-                    <Route path="/comments" element={<CommentPage />} />
+                    <Route path="/comentarios" element={<CommentPage />} />
+                    <Route path="/perfil" element={<ProfilePage />} />
 
                     <Route element={<RequiredAuth allowedRoles={['admin']} />}>
                         <Route path="/dashboard" element={<DashboardPage />} />

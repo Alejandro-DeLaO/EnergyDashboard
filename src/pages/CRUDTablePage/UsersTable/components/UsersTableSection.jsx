@@ -17,22 +17,32 @@ function UsersTableSection() {
   const deleteUser = (id) => {
     console.log(id);
     Swal.fire({
-      title: '¿Estás seguro de eliminar el edificio?',
+      title: '¿Estás seguro de eliminar a este usuario?',
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Si, eliminar',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if(result.isConfirmed) {
-        userService.deleteUser(id, auth.token);
-        setCount(count + 1);
-        Swal.fire({
-          title: 'El edificio fue eliminado con exito',
-          icon: 'info'
+        userService.deleteUser(id, auth.token)
+        .then(() => {
+          setUsers(prevUsers => prevUsers.filter(user => user._id !== id));
+          Swal.fire({
+            title: 'El usuario fue eliminado con exito',
+            icon: 'info'
+          });
+        })
+        .catch(err => {
+          Swal.fire({
+            title: 'Error al eliminar usuario, intentalo de nuevo',
+            icon: 'info'
+          });
+          console.log(err);
         });
+
       } else {
         Swal.fire({
-          title: 'El edificio no fue eliminado',
+          title: 'El usuario no fue eliminado',
           icon: 'info'
         });
       }
@@ -40,6 +50,7 @@ function UsersTableSection() {
   };
 
   //Update user
+  //No re-renderiza al cambiar el rol de un usuario :(
   const updateUser = (id, name, lastName, role) => {
     let newRole = "";
     if (role === "admin") {
@@ -56,6 +67,7 @@ function UsersTableSection() {
 
     Swal.fire({
       title: '¿Estás seguro de cambiar el rol de este usuario',
+      text: 'Si el rol del usuario es "user" cambiará su rol a "admin" y recibirá permisos de administrador, en cambio, si su rol es "admin" cambiará su rol a "user" y perederá los permisos de administrador',
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Si, cambiar',
@@ -139,7 +151,7 @@ function UsersTableSection() {
                       <td>
                         <button onClick={() => updateUser(user._id, user.name, user.lastName, user.role)} className="btn btn-primary mx-2">
                           {
-                            user.role === "user" ? <i class="fa-solid fa-arrow-up"></i> : <i class="fa-solid fa-arrow-down"></i>
+                            user.role === "user" ? <i className="fa-solid fa-arrow-up"></i> : <i className="fa-solid fa-arrow-down"></i>
                           }
                         </button>
                         <button onClick={() => deleteUser(user._id)} className="btn btn-danger mx-2">

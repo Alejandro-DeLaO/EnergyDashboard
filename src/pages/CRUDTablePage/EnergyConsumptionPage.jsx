@@ -14,27 +14,31 @@ function EnergyConsumptionPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalEnergyConsumptionsFound, setTotalEnergyConsumptionsFound] = useState(12);
   const [energyConsumptions, setEnergyConsumptions] = useState();
-  const [count, setCount] = useState(0);
 
   //Delete energy consumption register
   const deleteEnergyConsumption = (id) => {
     Swal.fire({
-      title: '¿Estás seguro de eliminar el comentario?',
+      title: '¿Estás seguro de eliminar el registro?',
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Si, eliminar',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if(result.isConfirmed) {
-        energyConsumptionService.deleteEnergyConsumption(id, auth.token);
-        setCount(count + 1);
-        Swal.fire({
-          title: 'El producto fue eliminado con exito',
-          icon: 'info'
-        });
+        energyConsumptionService.deleteEnergyConsumption(id, auth.token)
+        .then(() => {
+          setEnergyConsumptions(prevEnergyConsuptions => prevEnergyConsuptions.filter(energyConsumption => energyConsumption._id !== id));
+          Swal.fire({
+            title: 'El registro fue eliminado con exito',
+            icon: 'info'
+          });
+        }).catch(err => {
+          console.log(err);
+        })
+
       } else {
         Swal.fire({
-          title: 'El producto no fue eliminado',
+          title: 'El registro no fue eliminado',
           icon: 'info'
         });
       }
@@ -98,7 +102,7 @@ function EnergyConsumptionPage() {
                 <h2>Administrar <b>energia consumida</b></h2>
               </div>
               <div className="col-sm-6 d-flex m-auto justify-content-end">
-                <a href="/administrador/subirDatos/energiaConsumida" className="btn btn-success me-1" data-toggle="modal"><i className="fa-solid fa-plus"></i> <span>Añadir registro</span></a>
+                <a href="/administrador/subirDatos/energiaConsumida" className="btn btn-success me-1" data-toggle="modal"><i className="fa-solid fa-plus"></i> <span>Importar datos</span></a>
                 {/* <a href="/" className="btn btn-danger ms-1" data-toggle="modal"><i className="fa-solid fa-trash"></i> <span>Eliminar</span></a> */}
               </div>
             </div>

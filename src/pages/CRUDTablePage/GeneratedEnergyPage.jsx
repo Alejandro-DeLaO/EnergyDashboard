@@ -14,32 +14,35 @@ function GeneratedEnergyPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPhotovoltaicGenerationsFound, setTotalEnergyConsumptionsFound] = useState(12);
   const [photovoltaicGenerations, setPhotovoltaicGenerations] = useState();
-  const [count, setCount] = useState(1);
  
   //Delete photovoltaic generation register
   const deletePhotovoltaicGeneration = (id) => {
     Swal.fire({
-      title: '¿Estás seguro de eliminar el comentario?',
+      title: '¿Estás seguro de eliminar este registro?',
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Si, eliminar',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if(result.isConfirmed) {
-        photovoltaicGenerationsService.deletePhotovoltaicGeneration(id, auth.token);
-        setCount(count + 1);
-        Swal.fire({
-          title: 'El producto fue eliminado con exito',
-          icon: 'info'
+        photovoltaicGenerationsService.deletePhotovoltaicGeneration(id, auth.token)
+        .then(() => {
+          setPhotovoltaicGenerations(prevPhotovoltaicGenerations => prevPhotovoltaicGenerations.filter(photovoltaicGeneration => photovoltaicGeneration._id !== id));
+          Swal.fire({
+            title: 'El registro fue eliminado con exito',
+            icon: 'info'
+          });
+        })
+        .catch(err => {
+          console.log(err);
         });
       } else {
         Swal.fire({
-          title: 'El producto no fue eliminado',
+          title: 'El registro no fue eliminado',
           icon: 'info'
         });
       }
     });
-    console.log(count);
   }
 
   useEffect(() => {
@@ -99,7 +102,7 @@ function GeneratedEnergyPage() {
                 <h2>Administrar <b>energia generada</b></h2>
               </div>
               <div className="col-sm-6 d-flex m-auto justify-content-end">
-                <a href="/" className="btn btn-success me-1" data-toggle="modal"><i className="fa-solid fa-plus"></i> <span>Añadir registro</span></a>
+                <a href="/administrador/subirDatos/energiaGenerada" className="btn btn-success me-1" data-toggle="modal"><i className="fa-solid fa-plus"></i> <span>Importar datos</span></a>
               </div>
             </div>
           </div>

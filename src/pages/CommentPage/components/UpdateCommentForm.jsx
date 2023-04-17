@@ -15,7 +15,6 @@ export function UpdateCommentForm() {
 
   const onSubmit = async (data) => {
     data.user = auth.user._id
-    console.log(comm);
 
     try{
       await commentService.updateComment(comm, data);

@@ -37,7 +37,7 @@ export default function CreateBuildingForm() {
   return(
     //Modal
     <div className="modal fade" id="createBuilding" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div className="modal-dialog">
+      <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
             <h1 className="modal-title fs-5" id="exampleModalLabel">Crea un nuevo edificio</h1>

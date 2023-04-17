@@ -12,14 +12,13 @@ function BuildingsTableSection() {
   const navigate = useNavigate();
   const { auth, expiredToken } = useAuth();
   const [buildings, setBuildings] = useState();
-  const { buildingId, setBuildingId, count, setCount } = useContext(BuildingContext);
+  const { setBuildingId, count } = useContext(BuildingContext);
 
   //Update building --Get the building id and send it to UpdateBuildingForm--
   const getBuildingId = async (id) => {
     try{
       await setBuildingId(id);
       console.log("Building ID: ", id);
-      console.log(buildingId);
     } catch(err) {
       console.log(err);
     }
@@ -35,11 +34,20 @@ function BuildingsTableSection() {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if(result.isConfirmed) {
-        buildingService.deleteBuilding(id, auth.token);
-        setCount(count + 1);
-        Swal.fire({
-          title: 'El edificio fue eliminado con exito',
-          icon: 'info'
+        buildingService.deleteBuilding(id, auth.token)
+        .then(() => {
+          setBuildings(prevBuildings => prevBuildings.filter(building => building._id !== id));
+          Swal.fire({
+            title: 'El edificio fue eliminado con exito',
+            icon: 'info'
+          });
+        })
+        .catch(err => {
+          Swal.fire({
+            title: 'Error al eliminar el edificio, intentalo de nuevo',
+            icon: 'info'
+          });
+          console.log(err);
         });
       } else {
         Swal.fire({

@@ -36,9 +36,10 @@ export default function HomePage() {
                 <SectionComponent to='/indicador/CAE' img='/assets/linkImg2.png' text='Centro de atención a estudiantes' elevation='-25%' />
                 <SectionComponent to='/indicador/Biblioteca' img='/assets/linkImg3.png' text='Biblioteca universitaria' elevation="-20%" />
                 <SectionComponent to='/indicador/Salud' img='/assets/linkImg4.png' text='Ciencias de la salud' elevation="-20%" />
+                <SectionComponent to='/comentarios' img='/assets/linkImg8.png' text='Comentarios' elevation="-20%" marginL="10px" />
                 {/* <SectionComponent to='/test' img='/assets/linkImg5.png' text='Monitoreo' elevation="-20%" /> */}
                 {
-                    auth?.user?.role === 'admin' && <SectionComponent to='/administrador' img='/assets/user.png' text='Administrador' elevation="-20%" marginL="25px" />
+                    auth?.user?.role === 'admin' && <SectionComponent to='/administrador' img='/assets/linkImg6.png' text='Administrador' elevation="-20%" marginL="25px" />
                 }
             </div>
         </section>

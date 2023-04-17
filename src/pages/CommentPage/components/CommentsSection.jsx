@@ -25,12 +25,15 @@ export default function CreateCommentSection() {
   const [totalComments, setTotalComments] = useState(10);
   const [comments, setComments] = useState([]);
 
-
+  //Create comment
   const onSubmit = async (data, e) => {
     e.target.reset();
 
     //Add user to data.
     data.user = auth.user._id;
+
+    //Add date to data
+    data.createdAt = new Date();
 
     try {
       await commentService.postComment(data);
@@ -73,12 +76,21 @@ export default function CreateCommentSection() {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        commentService.deleteComment(id);
-        setCommentCount(commentCount + 1);
-        Swal.fire({
-          title: 'El comentario fue eliminado con exito',
-          icon: 'info'
-        });
+        commentService.deleteComment(id)
+        .then(() => {
+          setComments(prevComments => prevComments.filter(comment => comment._id !== id));
+          Swal.fire({
+            title: 'El comentario fue eliminado con exito',
+            icon: 'info'
+          });
+        })
+        .catch(err => {
+          Swal.fire({
+            title: 'Error al eliminar comentario, intentalo de nuevo',
+            icon: 'info'
+          });
+          console.log(err);
+        })
       } else {
         Swal.fire({
           title: 'El comentario no fue eliminado',
@@ -184,10 +196,11 @@ export default function CreateCommentSection() {
               <div className="d-flex">
                 <i className="fa-solid fa-user icon py-2 p-3 text-dark rounded" style={{ fontSize: "1.1rem" }} data-bs-toggle="dropdown" data-bs-display="static" />
                 <h4 className="mb-0 mt-auto ms-1">{comment?.user?.name}</h4>
+                <p className="ms-auto mb-0 mt-auto" >{new Date(comment.createdAt).toLocaleString('es-MX')}</p>
               </div>
               <p className="ms-5 px-4 mt-2">{comment.content}</p>
               {
-                auth?.user && auth?.user?.name === comment?.user?.name &&
+                auth?.user && (auth?.user?.name === comment?.user?.name || auth?.user?.role === 'admin') &&
                 <>
                   <div className='d-flex justify-content-end mt-3'>
                     {/* Edit button */}
