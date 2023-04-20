@@ -37,13 +37,13 @@ const gaugeNeedle = {
     const cx = width / 2;
     const cy = chart._metasets[0].data[0].y;
     
+  
     
-    //console.log(ctx);
 
 
     
     // needle
-    ctx.translate(cx, cy);
+    ctx.translate(cx + 30, cy);
     ctx.rotate(angle);
     ctx.beginPath();
     ctx.moveTo(0, -10);
@@ -55,20 +55,26 @@ const gaugeNeedle = {
 
     // needle dot
     ctx.beginPath();
-    ctx.arc(cx, cy, 10, 0, 10);
+    ctx.arc(cx + 30, cy, 10, 0, 10);
     ctx.fillStyle = "#444";
     ctx.fill();
     ctx.restore();
 
     ctx.fillStyle = "#444";
     ctx.font = "13px Helvetica";
-    ctx.fillText("+100KWh", width - 30, cy + 15);
+    ctx.fillText("", cx*1.25, cy + 15);
     ctx.textAlign = "center";
     ctx.restore();
 
     ctx.fillStyle = "#444";
     ctx.font = "13px Helvetica";
-    ctx.fillText("0KWh", 0 + 30, cy + 15);
+    ctx.fillText("+100KWh", cx*1.26, cy + 15);
+    ctx.textAlign = "center";
+    ctx.restore();
+
+    ctx.fillStyle = "#444";
+    ctx.font = "13px Helvetica";
+    ctx.fillText("0KWh", cx/1.24, cy + 15);
     ctx.textAlign = "center";
     ctx.restore();
   },
@@ -77,14 +83,18 @@ const gaugeNeedle = {
 // return block
 function DoughnutChart({ chartData = defaultData }) {
   return (
-    <div className="chart-container" style={{height: "100%"}}>
+    <div className="chart-container" style={{height: "100%"}} id="chart-container">
       <Doughnut
         data={chartData}
         plugins={[gaugeNeedle]}
         options={{
-          maintainAspectRatio: false
+          maintainAspectRatio: false,
+          responsive: true,
+          layout: {
+            padding: 30
+          }
         }}
-      />
+        />
     </div>
   );
 }
