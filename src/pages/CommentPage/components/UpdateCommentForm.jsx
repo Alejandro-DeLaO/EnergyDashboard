@@ -25,7 +25,6 @@ export function UpdateCommentForm() {
         timer: 2000
       });
       setCommentCount(commentCount + 1);
-      console.log(data);
     } catch(error) {
       Swal.fire({
         title: 'Error al actualizar comentario, intentalo de nuevo',
