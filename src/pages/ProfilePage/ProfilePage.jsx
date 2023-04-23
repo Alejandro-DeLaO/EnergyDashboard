@@ -65,10 +65,10 @@ export default function ProfilePage() {
             <div className="row g-0 py-4">
 
                 <div className="col-sm-4 card shadow mx-auto mb-4" style={{height: "100%"}}>
-                    <div className="card-header" style={{padding: "1rem", fontWeight: "500", fontSize: "1.2rem"}}>Foto de perfil</div>
+                    {/* <div className="card-header" style={{padding: "1rem", fontWeight: "500", fontSize: "1.2rem"}}>Foto de perfil</div> */}
                     <div className="card-body" style={{flexDirection: ""}}>
-                        <img className="d-block m-auto" alt="perfil" src={randomImg} style={{width: "60%"}} />
-                        <button className="d-block btn btn-primary mt-4 mb-2 m-auto" style={{color: "white"}}>Editar foto de perfil</button>
+                        <img className="d-block m-auto" alt="perfil" src={randomImg} style={{width: "70%"}} />
+                        {/* <button className="d-block btn btn-primary mt-4 mb-2 m-auto" style={{color: "white"}}>Editar foto de perfil</button> */}
                     </div>
                 </div>
 
