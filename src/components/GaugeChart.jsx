@@ -1,21 +1,6 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
-const defaultData = {
-  datasets: [
-    {
-      data: [20, 20, 20, 20, 20],
-      backgroundColor: ["#009a60", "#92b73a", "#edbd02", "#fc6114", "#ed0022"],
-      needleValue: 50,
-      borderColor: ["white"],
-      borderWidth: 2,
-      cutout: "65%",
-      circumference: 180,
-      rotation: 270,
-      borderRadius: 5,
-    },
-  ],
-};
 
 
 // gaugeNeedle block
@@ -81,7 +66,7 @@ const gaugeNeedle = {
 };
 
 // return block
-function DoughnutChart({ chartData = defaultData }) {
+function GaugeChart({ chartData }) {
   return (
     <div className="chart-container" style={{height: "100%"}} id="chart-container">
       <Doughnut
@@ -98,4 +83,4 @@ function DoughnutChart({ chartData = defaultData }) {
     </div>
   );
 }
-export default DoughnutChart;
+export default GaugeChart;

@@ -120,6 +120,21 @@ export default function EnergyIndicator() {
             },
         ],
     });
+    const [GaugeData] = useState({
+        datasets: [
+            {
+                data: [20, 20, 20, 20, 20],
+                backgroundColor: ["#009a60", "#92b73a", "#edbd02", "#fc6114", "#ed0022"],
+                needleValue: 50,
+                borderColor: ["white"],
+                borderWidth: 2,
+                cutout: "65%",
+                circumference: 180,
+                rotation: 270,
+                borderRadius: 5,
+            },
+        ],
+    });
 
     const lastDayPower = energyConsumptionsOfTheDay[0] ? (
         <Line
@@ -265,7 +280,7 @@ export default function EnergyIndicator() {
                                 <h5>Energia consumida en edificio - {currentBuildingName}</h5>
                             </div>
                             <div className="card-body" id="gauge-card-body-dos">
-                                <GaugeChart></GaugeChart>
+                                <GaugeChart chartData = {GaugeData}></GaugeChart>
                             </div>
                             <div className="card-footer">
                                 <h1 style={{ color: "#edbd02" }}>50KWh</h1>
