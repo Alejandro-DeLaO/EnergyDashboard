@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BACKEND_URL } from "../config/config"
+import { BACKEND_URL, BACKEND_URL_LAST_VALUE, BACKEND_URL_SET_OF_VALUES } from "../config/config"
 
 export function getEnergyConsumptions(token, parameters) {
     return axios.get(`${BACKEND_URL}energyConsumptions`, { headers: { authorization: `Bearer ${token}` }, params: parameters });
@@ -8,6 +8,22 @@ export function getEnergyConsumptions(token, parameters) {
 /* export function getEnergyConsumptionsPerDay(token, parameters) {
     return axios.get(`${BACKEND_URL}energyConsumptions/day`, { headers: { authorization: `Bearer ${token}` }, params: parameters });
 } */
+
+export function getLastRegister(uniqueId) {
+    return axios.get(`${BACKEND_URL_LAST_VALUE}${uniqueId}`);
+}
+
+export function getDataFromADate(SN, startDate, cursor) {
+    return axios.get(`${BACKEND_URL_SET_OF_VALUES}?constraints=[{"key":"SN","constraint_type":"equals","value":"${SN}"},{"key":"CreatedDate","constraint_type":"greater than","value":"${startDate}"}]&cursor=${cursor}`);
+}
+
+export function getDataUntilADate(SN, untilDate, cursor) {
+    return axios.get(`${BACKEND_URL_SET_OF_VALUES}?constraints=[{"key":"SN","constraint_type":"equals","value":"${SN}"},{"key":"CreatedDate","constraint_type":"less than","value":"${untilDate}"}]&cursor=${cursor}`);
+}
+
+export function getDataInARange(SN, startDate, endDate, cursor) {
+    return axios.get(`${BACKEND_URL_SET_OF_VALUES}?constraints=[{"key":"SN","constraint_type":"equals","value":"${SN}"},{"key":"CreatedDate","constraint_type":"greater than","value":"${startDate}"},{"key":"CreatedDate","constraint_type":"less than","value":"${endDate}"}]&cursor=${cursor}`);
+}
 
 export function getEnergyConsumptionsPerDay(parameters) {
     return axios.get(`${BACKEND_URL}energyConsumptions/day`, { params: parameters });

@@ -20,6 +20,11 @@ export default function EnergyIndicator() {
     const location = useLocation();
 
     const [currentBuildingName, setCurrentBuildingName] = useState();
+    //New server info.
+    const [todayEnergyInfo, setTodayEnergyInfo] = useState({});
+    const [yesterdayPowerInfo, setYesterdayPowerInfo] = useState({});
+    const [currentWeekInfo, setCurrentWeekInfo] = useState({});
+
     //Filtering by range of time.
     const [energyConsumptionsOfTheDay, setEnergyConsumptionsOfTheDay] = useState([]);
     const [energyConsumptionsOfTheWeek, setEnergyConsumptionsOfTheWeek] = useState([]);
@@ -41,6 +46,13 @@ export default function EnergyIndicator() {
     useEffect(() => {
         const getEnergyConsumptions = async () => {
             try {
+                //Reset information to see when loading new one.
+                if (todayEnergyInfo) {
+                    setTodayEnergyInfo({});
+                    setYesterdayPowerInfo({});
+                    setCurrentWeekInfo({});
+                }
+
                 //Get and save total consumptions by building.
                 const buildingsResponse = await buildingService.getBuildings();
                 let buildings = buildingsResponse.data.data.buildings;
@@ -58,6 +70,118 @@ export default function EnergyIndicator() {
                 const currentBuilding = buildings.find(building => building.name === currentBuildingPathname);
                 setCurrentBuildingName(currentBuilding.name);
 
+                //Get last register from this monitor to know what was the last date registered in server and get information from that date.
+                const lastRegister = await energyConsumptionService.getLastRegister(currentBuilding.uniqueId);
+                const lastInfoDate = new Date(lastRegister.data.response['Modified Date']);
+                const currentDate = new Date();
+
+                let dateParam;
+
+                //If lastInfoDate is lesser, then, send that date as param in next queries, otherwise send current date.
+                if (currentDate > lastInfoDate) dateParam = lastInfoDate;
+                else dateParam = currentDate;
+
+                //Get month, day and year from dateParam.
+                const monthDayYear = dateParam.toLocaleDateString('en-us').split('/');
+
+                //Iterate array and created objects with all buildings information.
+                buildings.forEach(async building => {
+                    //Get last and first days data to get information.
+                    let lastDayOfPreviousMonth = new Date(monthDayYear[2], monthDayYear[0] - 1, 0);
+                    let firstDayOfCurrentMonth = new Date(monthDayYear[2], monthDayYear[0] - 1, 1);
+
+                    //Get last day of last month information by a building.
+                    let lastDayOfLastMonthResponse = await energyConsumptionService.getDataInARange(building.SN, lastDayOfPreviousMonth.toLocaleDateString('en-us'), firstDayOfCurrentMonth.toLocaleDateString('en-us'));
+                    let lastDayOfLastMonthData = lastDayOfLastMonthResponse.data.response.results;
+
+                    //If into gotten registers there are remaining yet, get them to get last one into that range of time.
+                    if (lastDayOfLastMonthResponse.data.response.remaining !== 0) {
+                        //Get information again and change cursor value.
+                        lastDayOfLastMonthResponse = await energyConsumptionService.getDataInARange(building.SN, lastDayOfPreviousMonth.toLocaleDateString('en-us'), firstDayOfCurrentMonth.toLocaleDateString('en-us'), lastDayOfLastMonthResponse.data.response.cursor + lastDayOfLastMonthResponse.data.response.remaining);
+                        //And spread accumulated info.
+                        lastDayOfLastMonthData = [...lastDayOfLastMonthData, ...lastDayOfLastMonthResponse.data.response.results]
+                    }
+
+                    //And save last index of that array, if has information.
+                    setLastMonthTotalConsumptions(prevValue => {
+                        //Validate just 4 buildings, if length is 4, then restart buildings.
+                        if (prevValue?.buildingsData?.length === 4) prevValue = undefined;
+
+                        //Save buildings data.
+                        const buildingsData = prevValue?.buildingsData?.length > 0
+                            ? [...prevValue.buildingsData, { building, data: lastDayOfLastMonthData.length > 0 ? lastDayOfLastMonthData[lastDayOfLastMonthData.length - 1].kWhR : 0 }]
+                            : [{ building, data: lastDayOfLastMonthData.length > 0 ? lastDayOfLastMonthData[lastDayOfLastMonthData.length - 1].kWhR : 0 }];
+                        //And with that information create labels and datasets.
+                        const labels = buildingsData.map(buildingData => buildingData.building.name);
+                        const datasets = [{
+                            label: "Energia consumida",
+                            data: buildingsData.map((buildingData) => buildingData.data),
+                            borderColor: "black",
+                            borderWidth: 2,
+                            borderRadius: 5,
+                            barThickness: 40,
+                        }];
+
+                        return { ...prevValue, labels, datasets, buildingsData };
+                    });
+                });
+
+                //For getting a complete week information, get limits, first and last day of that week.
+                let auxDate = new Date(dateParam);
+                //Subtract 1 to get yesterday.
+                auxDate.setDate(auxDate.getDate() - 1);
+                let yesterday = new Date(auxDate);
+                //Then add up 2 to get tomorrow.
+                auxDate.setDate(auxDate.getDate() + 2);
+                let tomorrow = new Date(auxDate);
+                //And subtract 1 again to get initial auxDate as dateParam.
+                auxDate.setDate(auxDate.getDate() - 1);
+
+                let dayOfTheWeek = dateParam.getDay();
+                let firstDayOfTheWeek = new Date(auxDate.setDate(auxDate.getDate() - (dayOfTheWeek - 1)));
+                //To get last day, add up 6, but to get a correct range of data, sum 7 to get all information before that day.
+                let lastDayOfTheWeek = new Date(auxDate.setDate(auxDate.getDate() + 7));
+
+                //Get filtering.
+                let infoPerDay = await energyConsumptionService.getDataInARange(currentBuilding.SN, dateParam.toLocaleDateString('en-us'), tomorrow.toLocaleDateString('en-us'));
+                let completeDayInfo = infoPerDay.data.response.results;
+
+                while (infoPerDay.data.response.remaining !== 0) {
+                    //Get information again and change cursor value.
+                    infoPerDay = await energyConsumptionService.getDataInARange(currentBuilding.SN, dateParam.toLocaleDateString('en-us'), tomorrow.toLocaleDateString('en-us'), infoPerDay.data.response.remaining > 100 ? infoPerDay.data.response.cursor + 100 : infoPerDay.data.response.cursor + infoPerDay.data.response.remaining);
+                    //And spread accumulated info.
+                    completeDayInfo = [...completeDayInfo, ...infoPerDay.data.response.results]
+                }
+
+                setTodayEnergyInfo({ data: completeDayInfo, date: infoPerDay.data.response.results[0]['Modified Date'] });
+
+                let infoPerWeek = await energyConsumptionService.getDataInARange(currentBuilding.SN, firstDayOfTheWeek.toLocaleDateString('en-us'), lastDayOfTheWeek.toLocaleDateString('en-us'));
+                let completeWeekInfo = infoPerWeek.data.response.results;
+
+                while (infoPerWeek.data.response.remaining !== 0) {
+                    //Get information again and change cursor value.
+                    infoPerWeek = await energyConsumptionService.getDataInARange(currentBuilding.SN, firstDayOfTheWeek.toLocaleDateString('en-us'), lastDayOfTheWeek.toLocaleDateString('en-us'), infoPerWeek.data.response.remaining > 100 ? infoPerWeek.data.response.cursor + 100 : infoPerWeek.data.response.cursor + infoPerWeek.data.response.remaining);
+                    //And spread accumulated info.
+                    completeWeekInfo = [...completeWeekInfo, ...infoPerWeek.data.response.results]
+                }
+
+                setCurrentWeekInfo({ data: completeWeekInfo, startDate: firstDayOfTheWeek, endDate: lastDayOfTheWeek });
+
+                let dayBeforePower = await energyConsumptionService.getDataInARange(currentBuilding.SN, yesterday.toLocaleDateString('en-us'), dateParam.toLocaleDateString('en-us'));
+                let completeDayBeforePowerInfo = dayBeforePower.data.response.results;
+
+                while (dayBeforePower.data.response.remaining !== 0) {
+                    //Get information again and change cursor value.
+                    dayBeforePower = await energyConsumptionService.getDataInARange(currentBuilding.SN, yesterday.toLocaleDateString('en-us'), dateParam.toLocaleDateString('en-us'), dayBeforePower.data.response.remaining > 100 ? dayBeforePower.data.response.cursor + 100 : dayBeforePower.data.response.cursor + dayBeforePower.data.response.remaining);
+                    //And spread accumulated info.
+                    completeDayBeforePowerInfo = [...completeDayBeforePowerInfo, ...dayBeforePower.data.response.results]
+                }
+
+                setYesterdayPowerInfo({ data: completeDayBeforePowerInfo, date: yesterday });
+
+
+
+                /* 
                 //Get filtering.
                 const perDay = await energyConsumptionService.getEnergyConsumptionsPerDay({ building: currentBuilding._id, date: new Date('02/26/2023') });
                 setEnergyConsumptionsOfTheDay(perDay.data.data.energyConsumptionsOfThatDay);
@@ -73,7 +197,7 @@ export default function EnergyIndicator() {
                     //And save last index of that array, if has information.
                     setLastMonthTotalConsumptions(prevValue => {
                         //Validate just 4 buildings, if length is 4, then restart buildings.
-                        if(prevValue?.buildingsData?.length === 4) prevValue = undefined;
+                        if (prevValue?.buildingsData?.length === 4) prevValue = undefined;
 
                         //Save buildings data.
                         const buildingsData = prevValue?.buildingsData?.length > 0
@@ -93,6 +217,7 @@ export default function EnergyIndicator() {
                         return { ...prevValue, labels, datasets, buildingsData };
                     });
                 });
+                */
             } catch (error) {
                 if (error.response && error.response.data.status === 400) Swal.fire('Error', error.response.data.error, 'error');
                 else if (error.response && (error.response.data.status === 401 || error.response.data.status === 403)) {
@@ -121,14 +246,16 @@ export default function EnergyIndicator() {
         ],
     });
 
-    const lastDayPower = energyConsumptionsOfTheDay[0] ? (
+    const lastDayPower = yesterdayPowerInfo?.data ? (
         <Line
             data={{
-                labels: (energyConsumptionsOfTheDay.map((data) => data.createdAt)).map((date) => new Date(date)),
+                labels: (yesterdayPowerInfo.data.map((data) => data['Modified Date'])).map((date) => new Date(date)),
+                //labels: (energyConsumptionsOfTheDay.map((data) => data.createdAt)).map((date) => new Date(date)),
                 datasets: [
                     {
                         label: "Potencia",
-                        data: energyConsumptionsOfTheDay.map((data) => data.wr),
+                        data: yesterdayPowerInfo.data.map((data) => data.WR),
+                        //data: energyConsumptionsOfTheDay.map((data) => data.wr),
                         borderColor: "blue",
                         backgroundColor: "rgba(21, 209, 255, 0.4)",
                         borderWidth: 1,
@@ -165,14 +292,17 @@ export default function EnergyIndicator() {
         />
     ) : null;
 
-    const lastWeek = energyConsumptionsOfTheWeek[0] ? (
+    const lastWeek = currentWeekInfo?.data ? (
+        //const lastWeek = energyConsumptionsOfTheWeek[0] ? (
         <Line
             data={{
-                labels: (energyConsumptionsOfTheWeek.map((data) => data.createdAt)).map((date) => new Date(date)),
+                labels: (currentWeekInfo.data.map((data) => data['Modified Date'])).map((date) => new Date(date)),
+                //labels: (energyConsumptionsOfTheWeek.map((data) => data.createdAt)).map((date) => new Date(date)),
                 datasets: [
                     {
                         label: "Energia consumida ",
-                        data: energyConsumptionsOfTheWeek.map((data) => data.kwhr),
+                        data: currentWeekInfo.data.map((data) => data.kWhR),
+                        //data: energyConsumptionsOfTheWeek.map((data) => data.kwhr),
                         borderColor: "blue",
                         backgroundColor: "rgba(21, 209, 255, 0.4)",
                         borderWidth: 1,
@@ -210,14 +340,17 @@ export default function EnergyIndicator() {
         />
     ) : null;
 
-    const today = energyConsumptionsOfTheDay[0] ? (
+    const today = todayEnergyInfo?.data ? (
+        //const today = energyConsumptionsOfTheDay[0] ? (
         <Line
             data={{
-                labels: (energyConsumptionsOfTheDay.map((data) => data.createdAt)).map((date) => new Date(date)),
+                labels: (todayEnergyInfo.data.map((data) => data['Modified Date'])).map((date) => new Date(date)),
+                //labels: (energyConsumptionsOfTheDay.map((data) => data.createdAt)).map((date) => new Date(date)),
                 datasets: [
                     {
                         label: "Energia consumida ",
-                        data: energyConsumptionsOfTheDay.map((data) => data.kwhr),
+                        data: todayEnergyInfo.data.map((data) => data.kWhR),
+                        //data: energyConsumptionsOfTheDay.map((data) => data.kwhr),
                         borderColor: "blue",
                         backgroundColor: "rgba(21, 209, 255, 0.4)",
                         borderWidth: 1,
@@ -281,7 +414,7 @@ export default function EnergyIndicator() {
                                 {lastDayPower}
                             </div>
                             <div className="card-footer">
-                                <p style={{ fontSize: "1.3rem" }}>Potencia de día anterior</p>
+                                <p style={{ fontSize: "1.3rem" }}>Potencia ayer {yesterdayPowerInfo?.date && new Date(yesterdayPowerInfo.date).toLocaleDateString('es-mx')}</p>
                             </div>
                         </div>
                     </div>
@@ -291,7 +424,7 @@ export default function EnergyIndicator() {
                                 {lastWeek}
                             </div>
                             <div className="card-footer">
-                                <p style={{ fontSize: "1.3rem" }}>Ultima semana</p>
+                                <p style={{ fontSize: "1.3rem" }}>Semana {currentWeekInfo?.startDate && `${new Date(currentWeekInfo.startDate).toLocaleDateString('es-mx')} - ${new Date(currentWeekInfo.endDate).toLocaleDateString('es-mx')}`}</p>
                             </div>
                         </div>
                     </div>
@@ -301,7 +434,7 @@ export default function EnergyIndicator() {
                                 {today}
                             </div>
                             <div className="card-footer">
-                                <p style={{ fontSize: "1.3rem" }}>Hoy</p>
+                                <p style={{ fontSize: "1.3rem" }}>Hoy {todayEnergyInfo?.date && new Date(todayEnergyInfo.date).toLocaleDateString('es-mx')}</p>
                             </div>
                         </div>
                     </div>
