@@ -138,7 +138,10 @@ export default function EnergyIndicator() {
                 auxDate.setDate(auxDate.getDate() - 1);
 
                 let dayOfTheWeek = dateParam.getDay();
-                let firstDayOfTheWeek = new Date(auxDate.setDate(auxDate.getDate() - (dayOfTheWeek - 1)));
+                //First day is sunday.
+                let firstDayOfTheWeek = new Date(auxDate.setDate(auxDate.getDate() - (dayOfTheWeek)));
+                //If first day is monday use this.
+                //let firstDayOfTheWeek = new Date(auxDate.setDate(auxDate.getDate() - (dayOfTheWeek - 1)));
                 //To get last day, add up 6, but to get a correct range of data, sum 7 to get all information before that day.
                 let lastDayOfTheWeek = new Date(auxDate.setDate(auxDate.getDate() + 7));
 
