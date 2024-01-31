@@ -22,6 +22,7 @@ export function getDataUntilADate(SN, untilDate, cursor) {
 }
 
 export function getDataInARange(SN, startDate, endDate, cursor) {
+    // console.log(`${BACKEND_URL_SET_OF_VALUES}?constraints=[{"key":"SN","constraint_type":"equals","value":"${SN}"},{"key":"CreatedDate","constraint_type":"greater than","value":"${startDate}"},{"key":"CreatedDate","constraint_type":"less than","value":"${endDate}"}]&cursor=${cursor}`);
     return axios.get(`${BACKEND_URL_SET_OF_VALUES}?constraints=[{"key":"SN","constraint_type":"equals","value":"${SN}"},{"key":"CreatedDate","constraint_type":"greater than","value":"${startDate}"},{"key":"CreatedDate","constraint_type":"less than","value":"${endDate}"}]&cursor=${cursor}`);
 }
 

@@ -5,30 +5,25 @@ import LineChart from "../../components/LineChart";
 import BarChart from "../../components/BarChart";
 import "./styles/cards-heights-v2.css"
 import { Line } from "react-chartjs-2";
-import useAuth from "../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import CutSvg from "./components/CutSvg";
 import * as energyConsumptionService from '../../services/EnergyConsumption';
-import * as buildingService from '../../services/BuildingService';
+import * as monitorService from '../../services/BuildingService';
 import 'chartjs-adapter-date-fns';
 
 export default function EnergyIndicator() {
 
-    const { auth } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [currentBuildingName, setCurrentBuildingName] = useState();
+    const [currentMonitorName, setCurrentMonitorName] = useState();
     //New server info.
     const [todayEnergyInfo, setTodayEnergyInfo] = useState({});
     const [yesterdayPowerInfo, setYesterdayPowerInfo] = useState({});
     const [currentWeekInfo, setCurrentWeekInfo] = useState({});
-
-    //Filtering by range of time.
-    const [energyConsumptionsOfTheDay, setEnergyConsumptionsOfTheDay] = useState([]);
-    const [energyConsumptionsOfTheWeek, setEnergyConsumptionsOfTheWeek] = useState([]);
-    //Save total consumption by building.
+    const [efficiency, setEfficiency] = useState(50);
+    //Save total consumption by monitor.
     const [lastMonthTotalConsumptions, setLastMonthTotalConsumptions] = useState({
         labels: [],
         datasets: [
@@ -53,25 +48,24 @@ export default function EnergyIndicator() {
                     setCurrentWeekInfo({});
                 }
 
-                //Get and save total consumptions by building.
-                const buildingsResponse = await buildingService.getBuildings();
-                let buildings = buildingsResponse.data.data.buildings;
+                //Get and save total consumptions by monitor.
+                const monitors = monitorService.getMonitors();
 
-                //Get current building information.
+                //Get current monitor information.
                 const auxPathname = location.pathname.split('/');
-                const currentBuildingPathname = auxPathname[auxPathname.length - 1];
+                const currentMonitorPathname = auxPathname[auxPathname.length - 1];
 
-                //If building that comes in pathname does not exist into buildings, navigate to not found page.
-                if (!buildings.some(building => building.name === currentBuildingPathname)) {
+                // If monitor that comes in pathname does not exist into monitors, navigate to not found page.
+                if (!monitors.some(monitor => monitor.uniqueId === currentMonitorPathname)) {
                     navigate('/pagina-no-encontrada');
                     return;
                 }
-                //Otherwise, find current building information.
-                const currentBuilding = buildings.find(building => building.name === currentBuildingPathname);
-                setCurrentBuildingName(currentBuilding.name);
+                //Otherwise, find current monitor information.
+                const currentMonitor = monitors.find(monitor => monitor.uniqueId === currentMonitorPathname);
+                setCurrentMonitorName(currentMonitor.monitor);
 
                 //Get last register from this monitor to know what was the last date registered in server and get information from that date.
-                const lastRegister = await energyConsumptionService.getLastRegister(currentBuilding.uniqueId);
+                const lastRegister = await energyConsumptionService.getLastRegister(currentMonitor.uniqueId);
                 const lastInfoDate = new Date(lastRegister.data.response['Modified Date']);
                 const currentDate = new Date();
 
@@ -85,7 +79,7 @@ export default function EnergyIndicator() {
                 const monthDayYear = dateParam.toLocaleDateString('en-us').split('/');
 
                 //Iterate array and created objects with all buildings information.
-                buildings.forEach(async building => {
+                monitors.forEach(async building => {
                     //Get last and first days data to get information.
                     let lastDayOfPreviousMonth = new Date(monthDayYear[2], monthDayYear[0] - 1, 0);
                     let firstDayOfCurrentMonth = new Date(monthDayYear[2], monthDayYear[0] - 1, 1);
@@ -146,41 +140,62 @@ export default function EnergyIndicator() {
                 let lastDayOfTheWeek = new Date(auxDate.setDate(auxDate.getDate() + 7));
 
                 //Get filtering.
-                let infoPerDay = await energyConsumptionService.getDataInARange(currentBuilding.SN, dateParam.toLocaleDateString('en-us'), tomorrow.toLocaleDateString('en-us'));
+                let infoPerDay = await energyConsumptionService.getDataInARange(currentMonitor.SN, dateParam.toLocaleDateString('en-us'), tomorrow.toLocaleDateString('en-us'));
                 let completeDayInfo = infoPerDay.data.response.results;
 
                 while (infoPerDay.data.response.remaining !== 0) {
                     //Get information again and change cursor value.
-                    infoPerDay = await energyConsumptionService.getDataInARange(currentBuilding.SN, dateParam.toLocaleDateString('en-us'), tomorrow.toLocaleDateString('en-us'), infoPerDay.data.response.remaining > 100 ? infoPerDay.data.response.cursor + 100 : infoPerDay.data.response.cursor + infoPerDay.data.response.remaining);
+                    infoPerDay = await energyConsumptionService.getDataInARange(currentMonitor.SN, dateParam.toLocaleDateString('en-us'), tomorrow.toLocaleDateString('en-us'), infoPerDay.data.response.remaining > 100 ? infoPerDay.data.response.cursor + 100 : infoPerDay.data.response.cursor + infoPerDay.data.response.remaining);
                     //And spread accumulated info.
                     completeDayInfo = [...completeDayInfo, ...infoPerDay.data.response.results]
                 }
 
                 setTodayEnergyInfo({ data: completeDayInfo, date: infoPerDay.data.response.results[0]['Modified Date'] });
 
-                let infoPerWeek = await energyConsumptionService.getDataInARange(currentBuilding.SN, firstDayOfTheWeek.toLocaleDateString('en-us'), lastDayOfTheWeek.toLocaleDateString('en-us'));
+                //Getting energy consumption in last 7 days.
+                let infoPerWeek = await energyConsumptionService.getDataInARange(currentMonitor.SN, firstDayOfTheWeek.toLocaleDateString('en-us'), lastDayOfTheWeek.toLocaleDateString('en-us'));
                 let completeWeekInfo = infoPerWeek.data.response.results;
 
                 while (infoPerWeek.data.response.remaining !== 0) {
                     //Get information again and change cursor value.
-                    infoPerWeek = await energyConsumptionService.getDataInARange(currentBuilding.SN, firstDayOfTheWeek.toLocaleDateString('en-us'), lastDayOfTheWeek.toLocaleDateString('en-us'), infoPerWeek.data.response.remaining > 100 ? infoPerWeek.data.response.cursor + 100 : infoPerWeek.data.response.cursor + infoPerWeek.data.response.remaining);
+                    infoPerWeek = await energyConsumptionService.getDataInARange(currentMonitor.SN, firstDayOfTheWeek.toLocaleDateString('en-us'), lastDayOfTheWeek.toLocaleDateString('en-us'), infoPerWeek.data.response.remaining > 100 ? infoPerWeek.data.response.cursor + 100 : infoPerWeek.data.response.cursor + infoPerWeek.data.response.remaining);
                     //And spread accumulated info.
                     completeWeekInfo = [...completeWeekInfo, ...infoPerWeek.data.response.results]
                 }
 
+                //Get energy generation in last 7 days.
+                let energyGenerationPerWeek = await energyConsumptionService.getDataInARange(currentMonitor.SN, firstDayOfTheWeek.toLocaleDateString('en-us'), lastDayOfTheWeek.toLocaleDateString('en-us'));
+                let completeEnergyGenerationWeekInfo = energyGenerationPerWeek.data.response.results;
+
+                while (energyGenerationPerWeek.data.response.remaining !== 0) {
+                    //Get information again and change cursor value.
+                    energyGenerationPerWeek = await energyConsumptionService.getDataInARange(currentMonitor.SN, firstDayOfTheWeek.toLocaleDateString('en-us'), lastDayOfTheWeek.toLocaleDateString('en-us'), energyGenerationPerWeek.data.response.remaining > 100 ? energyGenerationPerWeek.data.response.cursor + 100 : energyGenerationPerWeek.data.response.cursor + energyGenerationPerWeek.data.response.remaining);
+                    //And spread accumulated info.
+                    completeEnergyGenerationWeekInfo = [...completeEnergyGenerationWeekInfo, ...energyGenerationPerWeek.data.response.results]
+                }
+
                 setCurrentWeekInfo({ data: completeWeekInfo, startDate: firstDayOfTheWeek, endDate: lastDayOfTheWeek });
 
-                let dayBeforePower = await energyConsumptionService.getDataInARange(currentBuilding.SN, yesterday.toLocaleDateString('en-us'), dateParam.toLocaleDateString('en-us'));
+                let dayBeforePower = await energyConsumptionService.getDataInARange(currentMonitor.SN, yesterday.toLocaleDateString('en-us'), dateParam.toLocaleDateString('en-us'));
                 let completeDayBeforePowerInfo = dayBeforePower.data.response.results;
 
                 while (dayBeforePower.data.response.remaining !== 0) {
                     //Get information again and change cursor value.
-                    dayBeforePower = await energyConsumptionService.getDataInARange(currentBuilding.SN, yesterday.toLocaleDateString('en-us'), dateParam.toLocaleDateString('en-us'), dayBeforePower.data.response.remaining > 100 ? dayBeforePower.data.response.cursor + 100 : dayBeforePower.data.response.cursor + dayBeforePower.data.response.remaining);
+                    dayBeforePower = await energyConsumptionService.getDataInARange(currentMonitor.SN, yesterday.toLocaleDateString('en-us'), dateParam.toLocaleDateString('en-us'), dayBeforePower.data.response.remaining > 100 ? dayBeforePower.data.response.cursor + 100 : dayBeforePower.data.response.cursor + dayBeforePower.data.response.remaining);
                     //And spread accumulated info.
                     completeDayBeforePowerInfo = [...completeDayBeforePowerInfo, ...dayBeforePower.data.response.results]
                 }
 
                 setYesterdayPowerInfo({ data: completeDayBeforePowerInfo, date: yesterday });
+
+                console.log(completeWeekInfo);
+                console.log(completeEnergyGenerationWeekInfo);
+
+                //After having all week consumption and generation, get percentage.
+                const kwhGenerated = completeEnergyGenerationWeekInfo.length > 0 ? completeEnergyGenerationWeekInfo[completeEnergyGenerationWeekInfo.length - 1] - completeEnergyGenerationWeekInfo[0] : 1;
+                const kwhConsumed = completeWeekInfo.length > 0 ? completeWeekInfo[completeWeekInfo.length - 1] - completeWeekInfo[0] : 1;
+                //Set this eficiency.
+                setEfficiency((kwhGenerated / kwhConsumed) * 100);
 
                 /* 
                 //Get filtering.
@@ -394,7 +409,7 @@ export default function EnergyIndicator() {
             {
                 data: [20, 20, 20, 20, 20],
                 backgroundColor: ["#009a60", "#92b73a", "#edbd02", "#fc6114", "#ed0022"],
-                needleValue: 50,
+                needleValue: efficiency,
                 borderColor: ["white"],
                 borderWidth: 2,
                 cutout: "65%",
@@ -412,10 +427,10 @@ export default function EnergyIndicator() {
                     <div className="col-12">
                         <div className="card shadow text-center h-100">
                             <div className="card-header ">
-                                <h5>Energia consumida en edificio - {currentBuildingName}</h5>
+                                <h5>Eficiencia energética - {currentMonitorName}</h5>
                             </div>
                             <div className="card-body" id="gauge-card-body-dos">
-                            <GaugeChart chartData = {GaugeData}></GaugeChart>
+                                <GaugeChart chartData={GaugeData}></GaugeChart>
                             </div>
                             <div className="card-footer">
                                 <h1 style={{ color: "#edbd02" }}>50KWh</h1>

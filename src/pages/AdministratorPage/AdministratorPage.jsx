@@ -7,9 +7,7 @@ export default function AdministratorPage() {
     const location = useLocation();
 
     const handleClick = () => {
-        if(location.pathname.includes('/administrador/subirDatos/')) navigate('/administrador/subirDatos');
-        else if(location.pathname.includes('/administrador/manipularDatos/')) navigate('/administrador/manipularDatos');
-        else if(location.pathname.includes('/administrador/subirDatos') || location.pathname.includes('/administrador/manipularDatos')) navigate('/administrador');
+        if(location.pathname.includes('edificios') || location.pathname.includes('usuarios')) navigate('/administrador');
         else navigate('/');
     };
 

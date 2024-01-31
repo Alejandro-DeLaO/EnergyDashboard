@@ -2,6 +2,7 @@ import React from "react";
 import SectionComponent from "../../components/SectionComponent";
 import '../../styles/homepage.css';
 import useAuth from "../../hooks/useAuth";
+import * as monitorService from '../../services/BuildingService';
 
 export default function HomePage() {
 
@@ -32,10 +33,10 @@ export default function HomePage() {
             </div>
 
             <div className="row d-flex justify-content-center section-container gap-3 m-auto mt-5">
-                <SectionComponent to='/indicador/IER' img='/assets/linkImg1.png' text='Instituto de energias renovables' elevation='-20%' />
-                <SectionComponent to='/indicador/CAE' img='/assets/linkImg2.png' text='Centro de atención a estudiantes' elevation='-25%' />
-                <SectionComponent to='/indicador/Biblioteca' img='/assets/linkImg3.png' text='Biblioteca universitaria' elevation="-20%" />
-                <SectionComponent to='/indicador/Salud' img='/assets/linkImg4.png' text='Ciencias de la salud' elevation="-20%" />
+                <SectionComponent to={`/indicador/IER/${monitorService.getMonitors()[0].uniqueId}`} img='/assets/linkImg1.png' text='Instituto de energias renovables' elevation='-20%' />
+                <SectionComponent to={`/indicador/CAE/${monitorService.getMonitors()[1].uniqueId}`} img='/assets/linkImg2.png' text='Centro de atención a estudiantes' elevation='-25%' />
+                <SectionComponent to={`/indicador/Biblioteca/${monitorService.getMonitors()[2].uniqueId}`} img='/assets/linkImg3.png' text='Biblioteca universitaria' elevation="-20%" />
+                <SectionComponent to={`/indicador/Salud/${monitorService.getMonitors()[3].uniqueId}`} img='/assets/linkImg4.png' text='Ciencias de la salud' elevation="-20%" />
                 <SectionComponent to='/comentarios' img='/assets/linkImg8.png' text='Comentarios' elevation="-20%" marginL="10px" />
                 {/* <SectionComponent to='/test' img='/assets/linkImg5.png' text='Monitoreo' elevation="-20%" /> */}
                 {
