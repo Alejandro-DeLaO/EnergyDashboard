@@ -22,7 +22,7 @@ export default function EnergyIndicator() {
     const [todayEnergyInfo, setTodayEnergyInfo] = useState({});
     const [yesterdayPowerInfo, setYesterdayPowerInfo] = useState({});
     const [currentWeekInfo, setCurrentWeekInfo] = useState({});
-    const [efficiency, setEfficiency] = useState(50);
+    const [efficiency, setEfficiency] = useState();
     //Save total consumption by monitor.
     const [lastMonthTotalConsumptions, setLastMonthTotalConsumptions] = useState({
         labels: [],
@@ -192,8 +192,8 @@ export default function EnergyIndicator() {
                 console.log(completeEnergyGenerationWeekInfo);
 
                 //After having all week consumption and generation, get percentage.
-                const kwhGenerated = completeEnergyGenerationWeekInfo.length > 0 ? completeEnergyGenerationWeekInfo[completeEnergyGenerationWeekInfo.length - 1] - completeEnergyGenerationWeekInfo[0] : 1;
-                const kwhConsumed = completeWeekInfo.length > 0 ? completeWeekInfo[completeWeekInfo.length - 1] - completeWeekInfo[0] : 1;
+                const kwhGenerated = completeEnergyGenerationWeekInfo.length > 0 ? completeEnergyGenerationWeekInfo[completeEnergyGenerationWeekInfo.length - 1].kWh - completeEnergyGenerationWeekInfo[0].kWh : 1;
+                const kwhConsumed = completeWeekInfo.length > 0 ? completeWeekInfo[completeWeekInfo.length - 1].kWh - completeWeekInfo[0].kWh : 1;
                 //Set this eficiency.
                 setEfficiency((kwhGenerated / kwhConsumed) * 100);
 
@@ -408,7 +408,8 @@ export default function EnergyIndicator() {
         datasets: [
             {
                 data: [20, 20, 20, 20, 20],
-                backgroundColor: ["#009a60", "#92b73a", "#edbd02", "#fc6114", "#ed0022"],
+                // backgroundColor: ["#009a60", "#92b73a", "#edbd02", "#fc6114", "#ed0022"],
+                backgroundColor: ["#ed0022", "#fc6114", "#edbd02", "#92b73a", "#009a60"],
                 needleValue: efficiency,
                 borderColor: ["white"],
                 borderWidth: 2,
@@ -430,10 +431,13 @@ export default function EnergyIndicator() {
                                 <h5>Eficiencia energética - {currentMonitorName}</h5>
                             </div>
                             <div className="card-body" id="gauge-card-body-dos">
-                                <GaugeChart chartData={GaugeData}></GaugeChart>
+                                {
+                                    efficiency && <GaugeChart chartData={GaugeData}></GaugeChart>
+                                }
                             </div>
                             <div className="card-footer">
-                                <h1 style={{ color: "#edbd02" }}>50KWh</h1>
+                                {/* <h1 style={{ color: "#edbd02" }}>50KWh</h1> */}
+                                <h1 style={{ color: "#edbd02" }}>Semana {currentWeekInfo?.startDate && `${new Date(currentWeekInfo.startDate).toLocaleDateString('es-mx')} - ${new Date(currentWeekInfo.endDate).toLocaleDateString('es-mx')}`}</h1>
                             </div>
                         </div>
                     </div>

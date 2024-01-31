@@ -53,13 +53,13 @@ const gaugeNeedle = {
 
     ctx.fillStyle = "#444";
     ctx.font = "13px Helvetica";
-    ctx.fillText("+100KWh", cx*1.26, cy + 15);
+    ctx.fillText("100%", cx*1.26, cy + 15);
     ctx.textAlign = "center";
     ctx.restore();
 
     ctx.fillStyle = "#444";
     ctx.font = "13px Helvetica";
-    ctx.fillText("0KWh", cx/1.24, cy + 15);
+    ctx.fillText("0%", cx/1.24, cy + 15);
     ctx.textAlign = "center";
     ctx.restore();
   },
